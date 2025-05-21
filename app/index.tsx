@@ -1,9 +1,20 @@
-import { Text, View } from 'react-native';
+import { router } from 'expo-router';
+import { Button, View } from 'react-native';
 
 export default function HomeScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>첫 페이지입니다</Text>
+      <Button
+        title="Bridge 페이지로 이동"
+        onPress={() => router.push('/bridge')}
+      />
+
+      <View style={{ height: 10 }} />
+
+      <Button
+        title="Main 페이지로 이동"
+        onPress={() => router.push('/main')}
+      />
     </View>
   );
 }

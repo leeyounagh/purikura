@@ -30,7 +30,7 @@ export default function HomeContainer() {
       resizeMode="cover"
     >
       <Container>
-        <Logo></Logo>
+        <Logo/>
         <ActionButtons
           onTakePhoto={handleTakePhoto}
           onSelectAlbum={handleSelectAlbum}

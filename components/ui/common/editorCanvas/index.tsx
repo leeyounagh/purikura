@@ -29,6 +29,9 @@ const DynamicPhoto = styled.Image<{ $aspectRatio: number }>`
   aspect-ratio: ${(props) => props.$aspectRatio};
   resize-mode: cover;
 `;
+const ButtonWrapper = styled.View`
+  flex-direction: row;
+`;
 const AddStickerButton = styled.TouchableOpacity`
   position: absolute;
   bottom: 32px;
@@ -45,6 +48,7 @@ const ButtonText = styled.Text`
 export default function EditorCanvas() {
   const imageUri = useImageStore((state) => state.imageUri);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
+  const [isShowPalette, setIsShowPalette] = useState(true);
   const addSticker = useEditorStore((state) => state.addSticker);
 
   useEffect(() => {
@@ -77,10 +81,11 @@ export default function EditorCanvas() {
           }
           $aspectRatio={aspectRatio}
         />
-        <DrawingLayer />
+
         <StickerLayer />
         <FilterLayer />
       </CanvasArea>
+      {isShowPalette && <DrawingLayer />}
       <AddStickerButton onPress={handleAddSticker}>
         <ButtonText>+ Sticker</ButtonText>
       </AddStickerButton>

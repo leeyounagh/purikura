@@ -1,6 +1,5 @@
 import { View } from "react-native"
-
-export  function DrawingLayer() {
+export  function FilterLayer() {
   return (
     <View></View>
   )

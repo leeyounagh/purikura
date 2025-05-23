@@ -1,6 +1,5 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { PanResponder, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import styled from "styled-components/native";
@@ -21,7 +20,7 @@ const BottomBar = styled.View`
   left: 0;
   right: 0;
   align-items: center;
-  z-index:50;
+  z-index: 50;
 `;
 
 const Palette = styled.View`
@@ -69,45 +68,63 @@ const CloseButton = styled.TouchableOpacity`
   elevation: 2;
 `;
 
-export function DrawingLayer() {
-  const [currentColor, setCurrentColor] = useState("hotpink");
+type PathItem = {
+  color: string;
+  path: string[];
+  width: number;
+};
+
+type DrawingLayerProps = {
+  currentColor: string;
+  strokeWidth: number;
+  disabled?: boolean;
+};
+
+export function DrawingLayer({
+  currentColor,
+  strokeWidth,
+  disabled=false,
+}: DrawingLayerProps) {
   const currentColorRef = useRef(currentColor);
+  const strokeWidthRef = useRef(strokeWidth);
 
   useEffect(() => {
     currentColorRef.current = currentColor;
   }, [currentColor]);
 
-  const [strokeWidth, setStrokeWidth] = useState(3);
-  const strokeWidthRef = useRef(strokeWidth);
-
   useEffect(() => {
     strokeWidthRef.current = strokeWidth;
   }, [strokeWidth]);
 
-  const [visible, setVisible] = useState(true);
-  const pathsRef = useRef<{ color: string; path: string[]; width: number }[]>([]);
-  const currentPath = useRef<{ color: string; path: string[]; width: number }>({
-    color: "hotpink",
+  const pathsRef = useRef<PathItem[]>([]);
+  const currentPath = useRef<PathItem>({
+    color: currentColor,
     path: [],
-    width: 3,
+    width: strokeWidth,
   });
+  
+
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   const panResponder = useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+   PanResponder.create({
+      onStartShouldSetPanResponder: () => !disabled,
+      onMoveShouldSetPanResponder: () => !disabled,
       onPanResponderGrant: (e) => {
+        if (disabled) return;
         const { locationX, locationY } = e.nativeEvent;
         currentPath.current.path = [`M${locationX},${locationY}`];
         currentPath.current.color = currentColorRef.current;
         currentPath.current.width = strokeWidthRef.current;
       },
       onPanResponderMove: (e) => {
+        if (disabled) return;
         const { locationX, locationY } = e.nativeEvent;
         currentPath.current.path.push(`L${locationX},${locationY}`);
         forceUpdate();
       },
       onPanResponderRelease: () => {
+        if (disabled) return;
         if (currentPath.current.path.length > 0) {
           pathsRef.current.push({ ...currentPath.current });
         }
@@ -120,22 +137,11 @@ export function DrawingLayer() {
       },
     })
   ).current;
-
-  const handleUndo = () => {
-    pathsRef.current.pop();
-    forceUpdate();
-  };
-
-  const handleClear = () => {
-    pathsRef.current = [];
-    forceUpdate();
-  };
-
-  if (!visible) return null;
+  
 
   return (
     <Container>
-      <View style={{ flex: 1 }} {...panResponder.panHandlers}>
+      <View style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }} {...panResponder.panHandlers}>
         <Svg style={{ flex: 1 }}>
           {pathsRef.current.map((item, idx) => (
             <Path
@@ -148,7 +154,7 @@ export function DrawingLayer() {
               strokeLinejoin="round"
             />
           ))}
-          {Array.isArray(currentPath.current.path) && currentPath.current.path.length > 0 && (
+          {currentPath.current.path.length > 0 && (
             <Path
               d={currentPath.current.path.join(" ")}
               stroke={currentPath.current.color}
@@ -160,41 +166,6 @@ export function DrawingLayer() {
           )}
         </Svg>
       </View>
-
-      <BottomBar>
-        <Palette>
-          {COLORS.map((color) => (
-            <ColorButton
-              key={color}
-              bg={color}
-              selected={currentColor === color}
-              onPress={() => setCurrentColor(color)}
-            />
-          ))}
-        </Palette>
-
-        <ControlRow>
-          <ControlIcon onPress={handleUndo}>
-            <MaterialIcons name="undo" size={20} color="black" />
-          </ControlIcon>
-
-          <ControlIcon onPress={handleClear}>
-            <MaterialIcons name="delete" size={20} color="black" />
-          </ControlIcon>
-
-          <StrokeSlider
-            minimumValue={1}
-            maximumValue={10}
-            step={1}
-            value={strokeWidth}
-            onValueChange={setStrokeWidth}
-          />
-
-          <CloseButton onPress={() => setVisible(false)}>
-            <MaterialIcons name="close" size={20} color="black" />
-          </CloseButton>
-        </ControlRow>
-      </BottomBar>
     </Container>
   );
 }

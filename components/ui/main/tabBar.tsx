@@ -1,4 +1,3 @@
-import { useEditorStore } from '@/store/useEditorStore'; // zustand store
 import { router } from 'expo-router';
 import React from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
@@ -32,7 +31,6 @@ type Props = {
 };
 
 export default function TabBar({ onOpenModal, onSave }: Props) {
-  const setDrawing = useEditorStore((state) => state.setIsDrawing);
 
   return (
     <TabWrapper source={require('../../../assets/images/common/main/bg/tab_bg.jpg')} resizeMode="cover" >
@@ -48,7 +46,7 @@ export default function TabBar({ onOpenModal, onSave }: Props) {
         <TabIcon source={require('../../../assets/images/common/main/button/sticker3.png')} />
       </TabButton>
 
-      <TabButton onPress={() => setDrawing(true)}>
+      <TabButton >
         <TabIcon source={require('../../../assets/images/common/main/button/pen3.png')} />
       </TabButton>
 

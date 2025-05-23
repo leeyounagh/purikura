@@ -130,14 +130,14 @@ export default function EditorCanvas() {
                 : require("../../../../assets/images/sample/user2.jpg")
             }
           />
-
+          <FilterLayer />
           <StickerLayer />
           <DrawingLayer
             currentColor={currentColor}
             strokeWidth={strokeWidth}
             disabled={!visible}
           />
-          <FilterLayer />
+
         </CanvasArea>
       </ViewShot>
       {visible && (

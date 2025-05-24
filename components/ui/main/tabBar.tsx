@@ -1,7 +1,7 @@
-import { router } from 'expo-router';
-import React from 'react';
-import { ImageBackground, TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
+import { router } from "expo-router";
+import React from "react";
+import { ImageBackground, TouchableOpacity } from "react-native";
+import styled from "styled-components/native";
 
 const TabWrapper = styled(ImageBackground)`
   flex-direction: row;
@@ -23,39 +23,52 @@ const TabIcon = styled.Image`
   resize-mode: contain;
 `;
 
-
-
 type Props = {
-  onOpenModal: (type: 'background' | 'sticker' | 'filter') => void;
-  onSave: () => void;
+  onOpenModal: (
+    type: "background" | "sticker" | "filter" | "pen" | "save"
+  ) => void;
 };
 
-export default function TabBar({ onOpenModal, onSave }: Props) {
-
+export default function TabBar({ onOpenModal }: Props) {
   return (
-    <TabWrapper source={require('../../../assets/images/common/main/bg/tab_bg.jpg')} resizeMode="cover" >
-      <TabButton onPress={() => router.push('/')}>
-        <TabIcon source={require('../../../assets/images/common/main/button/home3.png')} />
+    <TabWrapper
+      source={require("../../../assets/images/common/main/bg/tab_bg.jpg")}
+      resizeMode="cover"
+    >
+      <TabButton onPress={() => router.push("/")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/home3.png")}
+        />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal('background')}>
-        <TabIcon source={require('../../../assets/images/common/main/button/background3.png')} />
+      <TabButton onPress={() => onOpenModal("background")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/background3.png")}
+        />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal('sticker')}>
-        <TabIcon source={require('../../../assets/images/common/main/button/sticker3.png')} />
+      <TabButton onPress={() => onOpenModal("sticker")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/sticker3.png")}
+        />
       </TabButton>
 
-      <TabButton >
-        <TabIcon source={require('../../../assets/images/common/main/button/pen3.png')} />
+      <TabButton onPress={() => onOpenModal("pen")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/pen3.png")}
+        />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal('filter')}>
-        <TabIcon source={require('../../../assets/images/common/main/button/filter3.png')} />
+      <TabButton onPress={() => onOpenModal("filter")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/filter3.png")}
+        />
       </TabButton>
 
-      <TabButton onPress={onSave}>
-        <TabIcon source={require('../../../assets/images/common/main/button/save3.png')} />
+      <TabButton onPress={() => onOpenModal("save")}>
+        <TabIcon
+          source={require("../../../assets/images/common/main/button/save3.png")}
+        />
       </TabButton>
     </TabWrapper>
   );

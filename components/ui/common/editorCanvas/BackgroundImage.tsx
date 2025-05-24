@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components/native';
+import { useEditorStore } from "@/store/useEditorStore";
+import React from "react";
+import styled from "styled-components/native";
 
 const Background = styled.Image`
   position: absolute;
@@ -9,5 +10,7 @@ const Background = styled.Image`
 `;
 
 export const BackgroundImage = () => {
-  return <Background source={require('../../../../assets/images/sample/bg.jpg')} />;
+  const backgroundUri = useEditorStore((state) => state.backgroundUri);
+
+  return backgroundUri ? <Background source={backgroundUri} /> : null;
 };

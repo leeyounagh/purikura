@@ -22,6 +22,7 @@ interface EditorState {
   updateStickerPosition: (id: string, x: number, y: number) => void;
   updateStickerScale: (id: string, scale: number) => void;
   removeSticker: (id: string) => void;
+  setFilter: (filter: string | null) => void; // ✅ 추가
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
@@ -61,4 +62,5 @@ export const useEditorStore = create<EditorState>((set) => ({
     set((state) => ({
       stickers: state.stickers.filter((s) => s.id !== id),
     })),
+  setFilter: (filter) => set({ filter }), 
 }));

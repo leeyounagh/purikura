@@ -1,10 +1,12 @@
-import Slider from "@react-native-community/slider";
-import React, { useEffect, useRef } from "react";
-import { PanResponder, View } from "react-native";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
+import { PanResponder, PanResponderInstance, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import styled from "styled-components/native";
-
-const COLORS = ["hotpink", "red", "blue", "black", "orange"];
 
 const Container = styled.View`
   position: absolute;
@@ -12,60 +14,6 @@ const Container = styled.View`
   left: 0;
   right: 0;
   bottom: 0;
-`;
-
-const BottomBar = styled.View`
-  position: absolute;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  align-items: center;
-  z-index: 50;
-`;
-
-const Palette = styled.View`
-  flex-direction: row;
-  gap: 8px;
-  margin-bottom: 12px;
-`;
-
-const ControlRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-`;
-
-const ColorButton = styled.TouchableOpacity<{ selected: boolean; bg: string }>`
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  background-color: ${(props) => props.bg};
-  border-width: ${(props) => (props.selected ? 2 : 0)}px;
-  border-color: white;
-`;
-
-const ControlIcon = styled.TouchableOpacity`
-  background-color: white;
-  border-radius: 18px;
-  width: 36px;
-  height: 36px;
-  align-items: center;
-  justify-content: center;
-  elevation: 2;
-`;
-
-const StrokeSlider = styled(Slider)`
-  width: 120px;
-`;
-
-const CloseButton = styled.TouchableOpacity`
-  background-color: white;
-  border-radius: 18px;
-  width: 36px;
-  height: 36px;
-  align-items: center;
-  justify-content: center;
-  elevation: 2;
 `;
 
 type PathItem = {
@@ -80,13 +28,13 @@ type DrawingLayerProps = {
   disabled?: boolean;
 };
 
-export function DrawingLayer({
-  currentColor,
-  strokeWidth,
-  disabled=false,
-}: DrawingLayerProps) {
+export const DrawingLayer = forwardRef(function DrawingLayer(
+  { currentColor, strokeWidth, disabled = false }: DrawingLayerProps,
+  ref
+) {
   const currentColorRef = useRef(currentColor);
   const strokeWidthRef = useRef(strokeWidth);
+  const panResponderRef = useRef<PanResponderInstance | null>(null);
 
   useEffect(() => {
     currentColorRef.current = currentColor;
@@ -102,12 +50,22 @@ export function DrawingLayer({
     path: [],
     width: strokeWidth,
   });
-  
 
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
-  const panResponder = useRef(
-   PanResponder.create({
+  useImperativeHandle(ref, () => ({
+    undo: () => {
+      pathsRef.current.pop();
+      forceUpdate();
+    },
+    clear: () => {
+      pathsRef.current = [];
+      forceUpdate();
+    },
+  }));
+
+  useEffect(() => {
+    panResponderRef.current = PanResponder.create({
       onStartShouldSetPanResponder: () => !disabled,
       onMoveShouldSetPanResponder: () => !disabled,
       onPanResponderGrant: (e) => {
@@ -135,13 +93,15 @@ export function DrawingLayer({
         };
         forceUpdate();
       },
-    })
-  ).current;
-  
+    });
+  }, [disabled]);
 
   return (
     <Container>
-      <View style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }} {...panResponder.panHandlers}>
+      <View
+        style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }}
+        {...(panResponderRef.current?.panHandlers ?? {})}
+      >
         <Svg style={{ flex: 1 }}>
           {pathsRef.current.map((item, idx) => (
             <Path
@@ -168,4 +128,4 @@ export function DrawingLayer({
       </View>
     </Container>
   );
-}
+});

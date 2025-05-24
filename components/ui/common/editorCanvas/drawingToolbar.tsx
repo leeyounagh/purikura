@@ -79,6 +79,8 @@ export const DrawingToolbar = ({
   onClear,
   onClose,
 }: Props) => {
+  
+
   return (
     <BottomBar>
       <Palette>

@@ -1,4 +1,3 @@
-import { useEditorStore } from "@/store/useEditorStore";
 import { useImageStore } from "@/store/useImageStore";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useRef, useState } from "react";
@@ -31,43 +30,24 @@ const DynamicPhoto = styled.Image`
   resize-mode: cover;
 `;
 
-const AddStickerButton = styled.TouchableOpacity`
-  position: absolute;
-  bottom: 32px;
-  right: 24px;
-  background-color: hotpink;
-  padding: 10px 16px;
-  border-radius: 20px;
-`;
-
-const SaveImageButton = styled.TouchableOpacity`
-  position: absolute;
-  bottom: 90px;
-  right: 24px;
-  background-color: deepskyblue;
-  padding: 10px 16px;
-  border-radius: 20px;
-`;
-
-const ButtonText = styled.Text`
-  color: white;
-  font-weight: bold;
-`;
-
-export default function EditorCanvas() {
+export default function EditorCanvas({
+  pentoolVisible,
+  onPentoolClose,
+  isSave = false,
+  onSaveComplete,
+}: {
+  pentoolVisible: boolean;
+  onPentoolClose: () => void;
+  isSave: boolean;
+  onSaveComplete: () => void;
+}) {
   const imageUri = useImageStore((state) => state.imageUri);
-  const addSticker = useEditorStore((state) => state.addSticker);
   const viewShotRef = useRef(null);
-
+  const drawingLayerRef = useRef<{ undo: () => void; clear: () => void }>(null);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
   const [currentColor, setCurrentColor] = useState("hotpink");
   const [strokeWidth, setStrokeWidth] = useState(3);
-  const [visible, setVisible] = useState(true);
   const [_, forceUpdate] = React.useReducer((x) => x + 1, 0);
-
-  const pathsRef = useRef<{ color: string; path: string[]; width: number }[]>(
-    []
-  );
 
   useEffect(() => {
     if (imageUri) {
@@ -79,9 +59,11 @@ export default function EditorCanvas() {
     }
   }, [imageUri]);
 
-  const handleAddSticker = () => {
-    addSticker(require("../../../../assets/images/sample/sticker.png"));
-  };
+  useEffect(() => {
+    if (isSave) {
+      handleSaveImage();
+    }
+  }, [isSave]);
 
   const handleSaveImage = async () => {
     try {
@@ -101,16 +83,18 @@ export default function EditorCanvas() {
     } catch (e) {
       console.error("저장 실패:", e);
       Alert.alert("저장 실패", "사진을 저장할 수 없습니다.");
+    }finally{
+      onSaveComplete();
     }
   };
 
   const handleUndo = () => {
-    pathsRef.current.pop();
+    drawingLayerRef.current?.undo();
     forceUpdate();
   };
 
   const handleClear = () => {
-    pathsRef.current = [];
+    drawingLayerRef.current?.clear();
     forceUpdate();
   };
 
@@ -127,37 +111,31 @@ export default function EditorCanvas() {
             source={
               imageUri
                 ? { uri: imageUri }
-                : require("../../../../assets/images/sample/user2.jpg")
+                : require("../../../../assets/images/sample/user.png")
             }
           />
           <FilterLayer />
           <StickerLayer />
           <DrawingLayer
+            ref={drawingLayerRef}
+            // key={pentoolVisible ? "enabled" : "disabled"}
             currentColor={currentColor}
             strokeWidth={strokeWidth}
-            disabled={!visible}
+            disabled={!pentoolVisible}
           />
-
         </CanvasArea>
       </ViewShot>
-      {visible && (
+      {pentoolVisible && (
         <DrawingToolbar
           currentColor={currentColor}
           strokeWidth={strokeWidth}
           onChangeColor={setCurrentColor}
           onChangeWidth={setStrokeWidth}
-          onClose={() => setVisible(false)}
+          onClose={onPentoolClose}
           onUndo={handleUndo}
           onClear={handleClear}
         />
       )}
-      <AddStickerButton onPress={handleAddSticker}>
-        <ButtonText>+ Sticker</ButtonText>
-      </AddStickerButton>
-
-      <SaveImageButton onPress={handleSaveImage}>
-        <ButtonText>저장하기</ButtonText>
-      </SaveImageButton>
     </CanvasWrapper>
   );
 }

@@ -1,4 +1,5 @@
 // components/editorCanvas/filterLayer.tsx
+import { useEditorStore } from "@/store/useEditorStore";
 import React from "react";
 import styled from "styled-components/native";
 
@@ -8,13 +9,10 @@ const FilterImage = styled.Image`
   height: 100%;
   resize-mode: cover;
   opacity: 0.3;
-  pointer-events: none; 
+  pointer-events: none;
 `;
 
 export function FilterLayer() {
-  return (
-    <FilterImage
-      source={require("../../../../assets/images/sample/핑크필터.png")} 
-    />
-  );
+  const filter = useEditorStore((state) => state.filter);
+  return filter ? <FilterImage source={filter} /> : null;
 }

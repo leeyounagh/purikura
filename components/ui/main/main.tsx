@@ -1,10 +1,11 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { useState } from "react";
-import { Image, ScrollView, TouchableOpacity } from "react-native";
+import { FlatList, Image, ScrollView, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import EditorCanvas from "../common/editorCanvas";
 import { BottomSheetModal } from "../common/modal";
 import TabBar from "./tabBar";
+import { bgs, stickers } from "./utils/images";
 
 const Container = styled.View`
   flex: 1;
@@ -15,14 +16,18 @@ export const ContentArea = styled.ImageBackground`
   flex: 1;
   width: 100%;
 `;
+const LogoImageContainer = styled.View`
+  position: absolute;
+  bottom: 100px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
 
 const LogoImage = styled.Image`
   width: 250px;
-  justify-content: center;
-  align-items: center;
   height: 72px;
   resize-mode: contain;
-  align-self: center;
   margin-bottom: 50px;
 `;
 
@@ -35,6 +40,8 @@ export default function EditorScreen() {
   const setBackgroundUri = useEditorStore((state) => state.setBackgroundUri);
   const [pentoolVisible, setPentoolVisible] = useState(false);
   const [isSave, setIsSave] = useState(false);
+  const ITEMS_PER_PAGE = 10;
+  const [page, setPage] = useState(1);
 
   const closePentool = () => {
     setPentoolVisible(false);
@@ -46,42 +53,22 @@ export default function EditorScreen() {
       setSheetType(type);
       setPentoolVisible(false);
       if (type === "background") {
-        setSheetItems([
-          {
-            id: "bg1",
-            label: "배경1",
-            source: require("../../../assets/images/sample/bg.jpg"),
-          },
-          {
-            id: "bg2",
-            label: "배경2",
-            source: require("../../../assets/images/sample/bg.jpg"),
-          },
-        ]);
+        setPage(1);
+        setSheetItems(bgs.slice(0, ITEMS_PER_PAGE));
       } else if (type === "sticker") {
-        setSheetItems([
-          {
-            id: "st1",
-            label: "스티커1",
-            source: require("../../../assets/images/sample/sticker.png"),
-          },
-          {
-            id: "st2",
-            label: "스티커2",
-            source: require("../../../assets/images/common/heart.png"),
-          },
-        ]);
+        setPage(1);
+        setSheetItems(stickers.slice(0, ITEMS_PER_PAGE));
       } else if (type === "filter") {
         setSheetItems([
           {
             id: "f1",
             label: "핑크",
-            source: require("../../../assets/images/sample/핑크필터.png"),
+            source: require("../../../assets/images/common/filter/핑크필터.png"),
           },
           {
             id: "f2",
-            label: "빈티지",
-            source: require("../../../assets/images/sample/핑크필터.png"),
+            label: "흰색",
+            source: require("../../../assets/images/common/filter/흰색필터.png"),
           },
         ]);
       }
@@ -95,7 +82,25 @@ export default function EditorScreen() {
       setShowSheet(false);
     }
   };
+  const loadMoreItems = () => {
+    const nextPage = page + 1;
+    const start = 0;
+    const end = nextPage * ITEMS_PER_PAGE;
 
+    if (sheetType === "sticker") {
+      if (end <= stickers.length) {
+        const nextItems = stickers.slice(start, end);
+        setSheetItems(nextItems);
+        setPage(nextPage);
+      }
+    } else if (sheetType === "background") {
+      if (end <= bgs.length) {
+        const nextItems = bgs.slice(start, end);
+        setSheetItems(nextItems);
+        setPage(nextPage);
+      }
+    }
+  };
   const handleSave = () => {
     setIsSave(!isSave);
   };
@@ -116,16 +121,50 @@ export default function EditorScreen() {
         resizeMode="cover"
       >
         <BottomSheetModal visible={showSheet}>
-          <ScrollView horizontal>
-            {sheetItems.map((i) => (
-              <TouchableOpacity key={i.id} onPress={() => handleSelectItem(i)}>
-                <Image
-                  source={i.source}
-                  style={{ width: 80, height: 80, marginHorizontal: 8 }}
-                />
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+          <BottomSheetModal visible={showSheet}>
+            {sheetType === "filter" ? (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {sheetItems.map((i) => (
+                  <TouchableOpacity
+                    key={i.id}
+                    onPress={() => handleSelectItem(i)}
+                  >
+                    <Image
+                      source={i.source}
+                      style={{
+                        width: 80,
+                        height: 80,
+                        marginHorizontal: 8,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            ) : (
+              <FlatList
+                horizontal
+                data={sheetItems}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => handleSelectItem(item)}>
+                    <Image
+                      source={item.source}
+                      style={{
+                        width: 80,
+                        height: 80,
+                        marginHorizontal: 8,
+                        resizeMode: "contain",
+                      }}
+                    />
+                  </TouchableOpacity>
+                )}
+                onEndReached={loadMoreItems}
+                onEndReachedThreshold={0.5}
+                showsHorizontalScrollIndicator={false}
+              />
+            )}
+          </BottomSheetModal>
         </BottomSheetModal>
         <EditorCanvas
           pentoolVisible={pentoolVisible}
@@ -133,7 +172,11 @@ export default function EditorScreen() {
           isSave={isSave}
           onSaveComplete={() => setIsSave(false)}
         />
-        <LogoImage source={require("../../../assets/images/common/icon.png")} />
+        <LogoImageContainer>
+          <LogoImage
+            source={require("../../../assets/images/common/icon.png")}
+          />
+        </LogoImageContainer>
       </ContentArea>
 
       <TabBar onOpenModal={handleOpenSheet} />

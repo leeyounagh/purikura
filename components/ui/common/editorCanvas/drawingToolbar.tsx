@@ -13,6 +13,9 @@ const BottomBar = styled.View`
   right: 0;
   align-items: center;
   z-index: 50;
+  background-color:#D9D9D9;
+  padding-top:20px;
+   padding-bottom:20px;
 `;
 
 const Palette = styled.View`

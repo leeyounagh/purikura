@@ -11,6 +11,7 @@ const TabWrapper = styled(ImageBackground)`
   border-color: #ccc;
   height: 80px;
   width: 100%;
+  background-color:#000;
 `;
 const TabButton = styled(TouchableOpacity)`
   align-items: center;
@@ -32,7 +33,7 @@ type Props = {
 export default function TabBar({ onOpenModal }: Props) {
   return (
     <TabWrapper
-      source={require("../../../assets/images/common/main/bg/tab_bg.jpg")}
+      // source={require("../../../assets/images/common/main/bg/tab_bg.jpg")}
       resizeMode="cover"
     >
       <TabButton onPress={() => router.push("/")}>

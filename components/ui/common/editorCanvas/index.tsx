@@ -1,4 +1,6 @@
+import { useEditorStore } from "@/store/useEditorStore";
 import { useImageStore } from "@/store/useImageStore";
+import { MaterialIcons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import React, { useEffect, useRef, useState } from "react";
 import { Alert, Image as RNImage } from "react-native";
@@ -12,10 +14,12 @@ import { StickerLayer } from "./stickerLayer";
 
 const CanvasWrapper = styled.View`
   flex: 1;
+  margin-top: 100px;
   align-items: center;
-  justify-content: center;
 `;
-
+const InnerArea = styled.View`
+  align-items: center;
+`;
 const CanvasArea = styled.View`
   width: 100%;
   height: 100%;
@@ -28,6 +32,20 @@ const DynamicPhoto = styled.Image`
   width: 100%;
   height: 100%;
   resize-mode: cover;
+`;
+const ButtonWrapper = styled.View`
+  width: 100%;
+  align-items: flex-end;
+  padding-right:20px;
+  margin-top: 12px;
+`;
+const ResetButton = styled.TouchableOpacity`
+  background-color: black;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 20px;
+  elevation: 2;
 `;
 
 export default function EditorCanvas({
@@ -45,7 +63,7 @@ export default function EditorCanvas({
   const viewShotRef = useRef(null);
   const drawingLayerRef = useRef<{ undo: () => void; clear: () => void }>(null);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
-  const [currentColor, setCurrentColor] = useState("hotpink");
+  const [currentColor, setCurrentColor] = useState("");
   const [strokeWidth, setStrokeWidth] = useState(3);
   const [_, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
@@ -83,7 +101,7 @@ export default function EditorCanvas({
     } catch (e) {
       console.error("저장 실패:", e);
       Alert.alert("저장 실패", "사진을 저장할 수 없습니다.");
-    }finally{
+    } finally {
       onSaveComplete();
     }
   };
@@ -97,34 +115,48 @@ export default function EditorCanvas({
     drawingLayerRef.current?.clear();
     forceUpdate();
   };
+  const resetEditor = () => {
+    useEditorStore.getState().clearStickers();
+    useEditorStore.getState().setFilter("");
+    useEditorStore.getState().setBackgroundUri("");
+    drawingLayerRef.current?.clear();
+    forceUpdate();
+  };
 
   return (
     <CanvasWrapper>
-      <ViewShot
-        ref={viewShotRef}
-        style={{ width: "80%", aspectRatio, backgroundColor: "#191919" }}
-        options={{ result: "tmpfile", quality: 1 }}
-      >
-        <CanvasArea>
-          <BackgroundImage />
-          <DynamicPhoto
-            source={
-              imageUri
-                ? { uri: imageUri }
-                : require("../../../../assets/images/sample/user.png")
-            }
-          />
-          <FilterLayer />
-          <StickerLayer />
-          <DrawingLayer
-            ref={drawingLayerRef}
-            // key={pentoolVisible ? "enabled" : "disabled"}
-            currentColor={currentColor}
-            strokeWidth={strokeWidth}
-            disabled={!pentoolVisible}
-          />
-        </CanvasArea>
-      </ViewShot>
+      <InnerArea>
+        <ViewShot
+          ref={viewShotRef}
+          style={{ width: "80%", aspectRatio, backgroundColor: "#191919" }}
+          options={{ result: "tmpfile", quality: 1 }}
+        >
+          <CanvasArea>
+            <BackgroundImage />
+            <DynamicPhoto
+              source={
+                imageUri
+                  ? { uri: imageUri }
+                  : require("../../../../assets/images/sample/user.png")
+              }
+            />
+            <FilterLayer />
+            <StickerLayer />
+            <DrawingLayer
+              ref={drawingLayerRef}
+              currentColor={currentColor}
+              strokeWidth={strokeWidth}
+              disabled={!pentoolVisible}
+            />
+          </CanvasArea>
+        </ViewShot>
+      </InnerArea>
+      <ButtonWrapper>
+        <ResetButton onPress={resetEditor}>
+          <MaterialIcons name="restart-alt" size={24} color="white" />
+        </ResetButton>
+      </ButtonWrapper>
+
       {pentoolVisible && (
         <DrawingToolbar
           currentColor={currentColor}

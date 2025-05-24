@@ -22,7 +22,8 @@ interface EditorState {
   updateStickerPosition: (id: string, x: number, y: number) => void;
   updateStickerScale: (id: string, scale: number) => void;
   removeSticker: (id: string) => void;
-  setFilter: (filter: string | null) => void; // ✅ 추가
+  setFilter: (filter: string | null) => void; 
+  clearStickers: () => void; 
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
@@ -46,21 +47,18 @@ export const useEditorStore = create<EditorState>((set) => ({
         },
       ],
     })),
+  clearStickers: () => set({ stickers: [] }),
   updateStickerPosition: (id, x, y) =>
     set((state) => ({
-      stickers: state.stickers.map((s) =>
-        s.id === id ? { ...s, x, y } : s
-      ),
+      stickers: state.stickers.map((s) => (s.id === id ? { ...s, x, y } : s)),
     })),
   updateStickerScale: (id, scale) =>
     set((state) => ({
-      stickers: state.stickers.map((s) =>
-        s.id === id ? { ...s, scale } : s
-      ),
+      stickers: state.stickers.map((s) => (s.id === id ? { ...s, scale } : s)),
     })),
   removeSticker: (id) =>
     set((state) => ({
       stickers: state.stickers.filter((s) => s.id !== id),
     })),
-  setFilter: (filter) => set({ filter }), 
+  setFilter: (filter) => set({ filter }),
 }));

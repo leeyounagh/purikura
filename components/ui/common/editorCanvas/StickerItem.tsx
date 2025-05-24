@@ -1,12 +1,12 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import React from "react";
 import { PanResponder, TouchableWithoutFeedback, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
-    runOnJS,
-    useAnimatedStyle,
-    useSharedValue,
+  runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
 
@@ -75,8 +75,6 @@ export const StickerItem = ({
   const offsetY = useSharedValue(y);
   const scaleVal = useSharedValue(scale);
   const rotationVal = useSharedValue(0);
-
-
 
   let startScale = scale;
   let startRotation = 0;
@@ -150,7 +148,11 @@ export const StickerItem = ({
       <Animated.View style={[{ position: "absolute" }, animatedStyle]}>
         <View style={{ alignItems: "center" }}>
           <TouchableWithoutFeedback onPress={() => onSelect(id)}>
-            <StickerImage source={source} isSelected={isSelected} />
+            <StickerImage
+              source={source}
+              isSelected={isSelected}
+              resizeMode="contain"
+            />
           </TouchableWithoutFeedback>
 
           {isSelected && (
@@ -163,7 +165,11 @@ export const StickerItem = ({
                 style={{ bottom: -10, right: -10 }}
                 {...handleRotateDrag.panHandlers}
               >
-                <MaterialCommunityIcons name="rotate-right" size={18} color="black" />
+                <MaterialCommunityIcons
+                  name="rotate-right"
+                  size={18}
+                  color="black"
+                />
               </ControlIcon>
 
               <ControlIcon

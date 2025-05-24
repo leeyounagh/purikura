@@ -14,11 +14,11 @@ const SheetContainer = styled(Animated.View)`
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0px;
-  background-color: #d9d9d9;
+  bottom: -5px;
+  background-color: #000;
   overflow: hidden;
   z-index: 999;
-  padding-top:5px;
+  padding-top: 5px;
 `;
 
 export function BottomSheetModal({
@@ -27,6 +27,6 @@ export function BottomSheetModal({
   children,
 }: BottomSheetProps) {
   return (
-    visible && <SheetContainer  style={{height}}>{children}</SheetContainer>
+    visible && <SheetContainer style={{ height }}>{children}</SheetContainer>
   );
 }

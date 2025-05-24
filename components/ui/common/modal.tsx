@@ -1,35 +1,32 @@
-// components/common/BottomModal.tsx
-import React from 'react';
-import Modal from 'react-native-modal';
-import styled from 'styled-components/native';
+import React from "react";
+import { Animated, Dimensions } from "react-native";
+import styled from "styled-components/native";
 
-const ModalContainer = styled.View`
-  background-color: white;
-  padding: 20px;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  max-height: 70%;
+interface BottomSheetProps {
+  visible: boolean;
+  height?: number;
+  children: React.ReactNode;
+}
+
+const SCREEN_HEIGHT = Dimensions.get("window").height;
+
+const SheetContainer = styled(Animated.View)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  background-color: #000;
+  overflow: hidden;
+  z-index: 999;
+  padding-top: 5px;
 `;
 
-type Props = {
-  isVisible: boolean;
-  onClose: () => void;
-  children: React.ReactNode;
-};
-
-export default function BottomModal({ isVisible, onClose, children }: Props) {
+export function BottomSheetModal({
+  visible,
+  height = SCREEN_HEIGHT * 0.1,
+  children,
+}: BottomSheetProps) {
   return (
-    <Modal
-      isVisible={isVisible}
-      onBackdropPress={onClose}
-      onBackButtonPress={onClose}
-      style={{ justifyContent: 'flex-end', margin: 0 }}
-      animationIn="slideInUp"
-      animationOut="slideOutDown"
-    >
-      <ModalContainer>
-        {children}
-      </ModalContainer>
-    </Modal>
+    visible && <SheetContainer style={{ height }}>{children}</SheetContainer>
   );
 }

@@ -15,7 +15,7 @@ const SheetContainer = styled(Animated.View)`
   left: 0;
   right: 0;
   bottom: -5px;
-  background-color: #000;
+  background-color:#1a1a1a;
   overflow: hidden;
   z-index: 999;
   padding-top: 5px;

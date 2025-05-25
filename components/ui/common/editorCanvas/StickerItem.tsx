@@ -1,6 +1,5 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
 import { PanResponder, TouchableWithoutFeedback, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
@@ -84,7 +83,7 @@ export const StickerItem = ({
       { translateX: offsetX.value },
       { translateY: offsetY.value },
       { scale: scaleVal.value },
-      { rotateZ: `${-rotationVal.value}rad` },
+      { rotateZ: `${rotationVal.value}rad` },
     ],
   }));
 

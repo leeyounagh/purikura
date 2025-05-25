@@ -18,7 +18,7 @@ export const ContentArea = styled.ImageBackground`
 `;
 const LogoImageContainer = styled.View`
   position: absolute;
-  bottom: 100px;
+  bottom: 0px;
   width: 100%;
   align-items: center;
   justify-content: center;

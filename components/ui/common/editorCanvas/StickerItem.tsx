@@ -84,7 +84,7 @@ export const StickerItem = ({
       { translateX: offsetX.value },
       { translateY: offsetY.value },
       { scale: scaleVal.value },
-      { rotateZ: `${rotationVal.value}rad` },
+      { rotateZ: `${-rotationVal.value}rad` },
     ],
   }));
 

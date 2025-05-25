@@ -1,3 +1,6 @@
+import { useImageStore } from '@/store/useImageStore';
+import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
 import styled from 'styled-components/native';
 import ActionButtons from './buttonContainer';
 import Logo from './logo';
@@ -16,14 +19,34 @@ const Container = styled.View`
 `;
 
 export default function HomeContainer() {
+  const router =useRouter();
+  const setImageUri =useImageStore((state) =>state.setImageUri);
+
+
   const handleTakePhoto = () => {
     console.log('카메라 페이지로 이동');
   };
 
-  const handleSelectAlbum = () => {
-    console.log('앨범 페이지로 이동');
-  };
+ const handleSelectAlbum = async () => {
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (status !== 'granted') {
+    alert('갤러리 접근 권한이 필요합니다.');
+    return;
+  }
 
+  const result = await ImagePicker.launchImageLibraryAsync({
+    allowsEditing: false, 
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    quality: 1,
+  });
+
+  if (!result.canceled && result.assets?.[0]) {
+    const image = result.assets[0];
+    console.log('선택된 이미지:', image.uri);
+    setImageUri(image.uri)
+    router.push("/bridge")
+  }
+};
   return (
     <Background
       source={require('../../../assets/images/common/home/bg/bg.jpg')}

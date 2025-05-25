@@ -19,6 +19,8 @@ const CanvasWrapper = styled.View`
 `;
 const InnerArea = styled.View`
   align-items: center;
+  justify-content:flex-end;
+  height:460px;
 `;
 const CanvasArea = styled.View`
   width: 100%;

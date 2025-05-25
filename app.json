@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "purisnap",
-    "slug": "purisnap",
+    "slug": "purikura",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -51,6 +51,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/1abe62b0-fe00-4bf2-8873-ee86a43f822a"
-    }
+    },
+    "owner": "leesuyoen"
   }
 }

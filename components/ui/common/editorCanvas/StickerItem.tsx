@@ -1,6 +1,5 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
 import { PanResponder, TouchableWithoutFeedback, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {

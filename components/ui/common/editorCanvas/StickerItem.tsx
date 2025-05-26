@@ -127,7 +127,7 @@ export const StickerItem = ({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
       const rotationAmount = gestureState.dx * 0.01;
-      rotationVal.value += rotationAmount;
+      rotationVal.value -= rotationAmount;
     },
   });
 

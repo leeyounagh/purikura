@@ -334,6 +334,16 @@ export const stickers = [
     label: "스티커67",
     source: require("../../../../assets/images/common/sticker/67.png"),
   },
+  {
+    id: "st68",
+    label: "스티커68",
+    source: require("../../../../assets/images/common/sticker/68.png"),
+  },
+  {
+    id: "st69",
+    label: "스티커69",
+    source: require("../../../../assets/images/common/sticker/69.png"),
+  },
 ];
 
 export const bgs = [
@@ -367,17 +377,77 @@ export const bgs = [
     label: "배경6",
     source: require("../../../../assets/images/common/bg/6.png"),
   },
+  {
+    id: "bg7",
+    label: "배경7",
+    source: require("../../../../assets/images/common/bg/7.png"),
+  },
+  {
+    id: "bg8",
+    label: "배경8",
+    source: require("../../../../assets/images/common/bg/8.png"),
+  },
+  {
+    id: "bg9",
+    label: "배경9",
+    source: require("../../../../assets/images/common/bg/9.png"),
+  },
+  {
+    id: "bg10",
+    label: "배경10",
+    source: require("../../../../assets/images/common/bg/10.png"),
+  },
+  {
+    id: "bg11",
+    label: "배경11",
+    source: require("../../../../assets/images/common/bg/11.png"),
+  },
+  {
+    id: "bg12",
+    label: "배경12",
+    source: require("../../../../assets/images/common/bg/12.png"),
+  },
+  {
+    id: "bg13",
+    label: "배경13",
+    source: require("../../../../assets/images/common/bg/13.png"),
+  },
+  {
+    id: "bg14",
+    label: "배경14",
+    source: require("../../../../assets/images/common/bg/14.png"),
+  },
+    {
+    id: "bg15",
+    label: "배경15",
+    source: require("../../../../assets/images/common/bg/15.png"),
+  },
 ];
 
 export const filters = [
-          {
-            id: "f1",
-            label: "핑크",
-            source: require("../../../../assets/images/common/filter/1.png"),
-          },
-          {
-            id: "f2",
-            label: "흰색",
-            source: require("../../../../assets/images/common/filter/2.png"),
-          },
-]
+  {
+    id: "f1",
+    label: "핑크",
+    source: require("../../../../assets/images/common/filter/1.png"),
+  },
+  {
+    id: "f2",
+    label: "흰색",
+    source: require("../../../../assets/images/common/filter/2.png"),
+  },
+  {
+    id: "f3",
+    label: "회색",
+    source: require("../../../../assets/images/common/filter/3.png"),
+  },
+  {
+    id: "f4",
+    label: "하늘",
+    source: require("../../../../assets/images/common/filter/4.png"),
+  },
+  {
+    id: "f5",
+    label: "살색",
+    source: require("../../../../assets/images/common/filter/5.png"),
+  },
+];

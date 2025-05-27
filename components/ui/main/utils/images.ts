@@ -373,11 +373,11 @@ export const filters = [
           {
             id: "f1",
             label: "핑크",
-            source: require("../../../../assets/images/common/filter/핑크필터.png"),
+            source: require("../../../../assets/images/common/filter/1.png"),
           },
           {
             id: "f2",
             label: "흰색",
-            source: require("../../../../assets/images/common/filter/흰색필터.png"),
+            source: require("../../../../assets/images/common/filter/2.png"),
           },
 ]

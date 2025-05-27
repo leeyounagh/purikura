@@ -19,6 +19,7 @@ const SheetContainer = styled(Animated.View)`
   overflow: hidden;
   z-index: 999;
   padding-top: 5px;
+  pdding-bottom: 5px;
 `;
 
 export function BottomSheetModal({

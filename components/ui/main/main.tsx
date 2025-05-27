@@ -75,7 +75,6 @@ export default function EditorScreen() {
       setTimeout(() => {
         loadMoreItems();
       }, 100);
-
       return;
     }
 
@@ -128,7 +127,8 @@ export default function EditorScreen() {
       setFilter(item.source);
     }
   };
-
+  console.log("sheetItems", sheetItems);
+  console.log("sheetType", sheetType);
   return (
     <Container>
       <ContentArea

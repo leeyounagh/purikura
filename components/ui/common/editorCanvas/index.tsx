@@ -65,7 +65,7 @@ export default function EditorCanvas({
   const viewShotRef = useRef(null);
   const drawingLayerRef = useRef<{ undo: () => void; clear: () => void }>(null);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
-  const [currentColor, setCurrentColor] = useState("");
+  const [currentColor, setCurrentColor] = useState("black");
   const [strokeWidth, setStrokeWidth] = useState(3);
   const [_, forceUpdate] = React.useReducer((x) => x + 1, 0);
 

@@ -40,7 +40,7 @@ export default function EditorScreen() {
   const setBackgroundUri = useEditorStore((state) => state.setBackgroundUri);
   const [pentoolVisible, setPentoolVisible] = useState(false);
   const [isSave, setIsSave] = useState(false);
-  const ITEMS_PER_PAGE = 5;
+  const ITEMS_PER_PAGE = 10;
   const [page, setPage] = useState(1);
   const flatListRef = useRef<FlatList>(null);
 
@@ -58,10 +58,11 @@ export default function EditorScreen() {
     const isSheetType = ["background", "sticker", "filter"].includes(type);
 
     if (isSheetType) {
+      setPage(1);
       setShowSheet(true);
       setSheetType(type);
       setPentoolVisible(false);
-      setPage(1); 
+
       const dataMap: Record<string, any[]> = {
         background: bgs,
         sticker: stickers,
@@ -70,6 +71,10 @@ export default function EditorScreen() {
 
       const initialItems = dataMap[type].slice(0, ITEMS_PER_PAGE);
       setSheetItems(initialItems);
+
+      setTimeout(() => {
+        loadMoreItems();
+      }, 100);
 
       return;
     }
@@ -103,7 +108,7 @@ export default function EditorScreen() {
     const items = dataMap[sheetType];
     if (!items) return;
 
-    if (start < items.length) {
+    if (end > sheetItems.length && start < items.length) {
       const nextItems = items.slice(0, end);
       setSheetItems(nextItems);
       setPage(nextPage);
@@ -113,6 +118,7 @@ export default function EditorScreen() {
   const handleSave = () => {
     setIsSave(!isSave);
   };
+
   const handleSelectItem = (item: (typeof sheetItems)[0]) => {
     if (sheetType === "background") {
       setBackgroundUri(item.source);
@@ -130,30 +136,28 @@ export default function EditorScreen() {
         resizeMode="cover"
       >
         <BottomSheetModal visible={showSheet}>
-          <BottomSheetModal visible={showSheet}>
-            <FlatList
-              horizontal
-              ref={flatListRef}
-              data={sheetItems}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => handleSelectItem(item)}>
-                  <Image
-                    source={item.source}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      marginHorizontal: 8,
-                      resizeMode: "contain",
-                    }}
-                  />
-                </TouchableOpacity>
-              )}
-              onEndReached={loadMoreItems}
-              onEndReachedThreshold={0.5}
-              showsHorizontalScrollIndicator={false}
-            />
-          </BottomSheetModal>
+          <FlatList
+            horizontal
+            ref={flatListRef}
+            data={sheetItems}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity onPress={() => handleSelectItem(item)}>
+                <Image
+                  source={item.source}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    marginHorizontal: 8,
+                    resizeMode: "contain",
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+            onEndReached={loadMoreItems}
+            onEndReachedThreshold={0.5}
+            showsHorizontalScrollIndicator={false}
+          />
         </BottomSheetModal>
         <EditorCanvas
           pentoolVisible={pentoolVisible}
@@ -167,7 +171,6 @@ export default function EditorScreen() {
           />
         </LogoImageContainer>
       </ContentArea>
-
       <TabBar onOpenModal={handleOpenSheet} />
     </Container>
   );

@@ -19,8 +19,8 @@ const CanvasWrapper = styled.View`
 `;
 const InnerArea = styled.View`
   align-items: center;
-  justify-content:flex-end;
-  height:460px;
+  justify-content: flex-end;
+  height: 460px;
 `;
 const CanvasArea = styled.View`
   width: 100%;
@@ -38,7 +38,7 @@ const DynamicPhoto = styled.Image`
 const ButtonWrapper = styled.View`
   width: 100%;
   align-items: flex-end;
-  padding-right:20px;
+  padding-right: 20px;
   margin-top: 12px;
 `;
 const ResetButton = styled.TouchableOpacity`
@@ -135,13 +135,7 @@ export default function EditorCanvas({
         >
           <CanvasArea>
             <BackgroundImage />
-            <DynamicPhoto
-              source={
-                imageUri
-                  ? { uri: imageUri }
-                  : require("../../../../assets/images/sample/user.png")
-              }
-            />
+            {imageUri && <DynamicPhoto source={{ uri: imageUri }} />}
             <FilterLayer />
             <StickerLayer />
             <DrawingLayer

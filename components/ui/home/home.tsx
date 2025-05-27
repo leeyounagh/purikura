@@ -62,7 +62,7 @@ export default function HomeContainer() {
   };
   return (
     <Background
-      source={require("../../../assets/images/common/home/bg/bg.jpg")}
+      source={require("../../../assets/images/common/home/bg/bg.png")}
       resizeMode="cover"
     >
       <Container>

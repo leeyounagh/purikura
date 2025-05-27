@@ -368,3 +368,16 @@ export const bgs = [
     source: require("../../../../assets/images/common/bg/6.png"),
   },
 ];
+
+export const filters = [
+          {
+            id: "f1",
+            label: "핑크",
+            source: require("../../../../assets/images/common/filter/1.png"),
+          },
+          {
+            id: "f2",
+            label: "흰색",
+            source: require("../../../../assets/images/common/filter/2.png"),
+          },
+]

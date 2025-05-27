@@ -1,11 +1,11 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { useState } from "react";
-import { FlatList, Image, ScrollView, TouchableOpacity } from "react-native";
+import { FlatList, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import EditorCanvas from "../common/editorCanvas";
 import { BottomSheetModal } from "../common/modal";
 import TabBar from "./tabBar";
-import { bgs, stickers } from "./utils/images";
+import { bgs, filters, stickers } from "./utils/images";
 
 const Container = styled.View`
   flex: 1;
@@ -59,18 +59,8 @@ export default function EditorScreen() {
         setPage(1);
         setSheetItems(stickers.slice(0, ITEMS_PER_PAGE));
       } else if (type === "filter") {
-        setSheetItems([
-          {
-            id: "f1",
-            label: "핑크",
-            source: require("../../../assets/images/common/filter/핑크필터.png"),
-          },
-          {
-            id: "f2",
-            label: "흰색",
-            source: require("../../../assets/images/common/filter/흰색필터.png"),
-          },
-        ]);
+        setPage(1);
+        setSheetItems(filters.slice(0, ITEMS_PER_PAGE));
       }
     } else if (type === "pen") {
       setPentoolVisible((prev) => !prev);
@@ -99,6 +89,12 @@ export default function EditorScreen() {
         setSheetItems(nextItems);
         setPage(nextPage);
       }
+    } else if (sheetType === "filter") {
+      if (end <= filters.length) {
+        const nextItems = filters.slice(start, end);
+        setSheetItems(nextItems);
+        setPage(nextPage);
+      }
     }
   };
   const handleSave = () => {
@@ -122,26 +118,6 @@ export default function EditorScreen() {
       >
         <BottomSheetModal visible={showSheet}>
           <BottomSheetModal visible={showSheet}>
-            {sheetType === "filter" ? (
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {sheetItems.map((i) => (
-                  <TouchableOpacity
-                    key={i.id}
-                    onPress={() => handleSelectItem(i)}
-                  >
-                    <Image
-                      source={i.source}
-                      style={{
-                        width: 80,
-                        height: 80,
-                        marginHorizontal: 8,
-                        resizeMode: "contain",
-                      }}
-                    />
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-            ) : (
               <FlatList
                 horizontal
                 data={sheetItems}
@@ -163,7 +139,6 @@ export default function EditorScreen() {
                 onEndReachedThreshold={0.5}
                 showsHorizontalScrollIndicator={false}
               />
-            )}
           </BottomSheetModal>
         </BottomSheetModal>
         <EditorCanvas

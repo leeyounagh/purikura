@@ -6,6 +6,7 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
 
@@ -119,15 +120,16 @@ export const StickerItem = ({
 
   const combinedGesture = Gesture.Simultaneous(
     panGesture,
-    pinchGesture,
-    rotationGesture
+    Gesture.Simultaneous(pinchGesture, rotationGesture)
   );
 
   const handleRotateDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
-      const rotationAmount = gestureState.dx * 0.01;
-      rotationVal.value += rotationAmount;
+      const rotationAmount = gestureState.dx * 0.005; 
+      rotationVal.value = withTiming(rotationVal.value - rotationAmount, {
+        duration: 50,
+      });
     },
   });
 
@@ -175,7 +177,11 @@ export const StickerItem = ({
                 style={{ bottom: -10, left: -10 }}
                 {...handleResizeDrag.panHandlers}
               >
-                <MaterialCommunityIcons name="resize" size={18} color="black" />
+                <MaterialCommunityIcons
+                  name="resize"
+                  size={18}
+                  color="black"
+                />
               </ControlIcon>
             </>
           )}

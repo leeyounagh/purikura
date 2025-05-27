@@ -126,7 +126,7 @@ export const StickerItem = ({
   const handleRotateDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
-      const rotationAmount = gestureState.dx * 0.005; 
+      const rotationAmount = gestureState.dx * 0.01; 
       rotationVal.value = withTiming(rotationVal.value - rotationAmount, {
         duration: 50,
       });
@@ -136,7 +136,7 @@ export const StickerItem = ({
   const handleResizeDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
-      const newScale = scaleVal.value + gestureState.dx * 0.005;
+      const newScale = scaleVal.value + gestureState.dx * 0.003;
       scaleVal.value = Math.max(0.3, Math.min(3, newScale));
     },
     onPanResponderRelease: () => {

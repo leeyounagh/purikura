@@ -50,8 +50,6 @@ export default function EditorScreen() {
 
   useEffect(() => {
     if (["background", "sticker", "filter"].includes(sheetType)) {
-      setPage(1);
-
       flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
     }
   }, [sheetType]);
@@ -63,14 +61,16 @@ export default function EditorScreen() {
       setShowSheet(true);
       setSheetType(type);
       setPentoolVisible(false);
-
+      setPage(1); 
       const dataMap: Record<string, any[]> = {
         background: bgs,
         sticker: stickers,
         filter: filters,
       };
 
-      setSheetItems(dataMap[type].slice(0, ITEMS_PER_PAGE));
+      const initialItems = dataMap[type].slice(0, ITEMS_PER_PAGE);
+      setSheetItems(initialItems);
+
       return;
     }
 
@@ -91,7 +91,7 @@ export default function EditorScreen() {
 
   const loadMoreItems = () => {
     const nextPage = page + 1;
-    const start = 0;
+    const start = (nextPage - 1) * ITEMS_PER_PAGE;
     const end = nextPage * ITEMS_PER_PAGE;
 
     const dataMap: Record<string, any[]> = {
@@ -103,8 +103,8 @@ export default function EditorScreen() {
     const items = dataMap[sheetType];
     if (!items) return;
 
-    if (end <= items.length) {
-      const nextItems = items.slice(start, end);
+    if (start < items.length) {
+      const nextItems = items.slice(0, end);
       setSheetItems(nextItems);
       setPage(nextPage);
     }

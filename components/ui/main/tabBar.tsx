@@ -33,7 +33,6 @@ type Props = {
 export default function TabBar({ onOpenModal }: Props) {
   return (
     <TabWrapper
-      // source={require("../../../assets/images/common/main/bg/tab_bg.jpg")}
       resizeMode="cover"
     >
       <TabButton onPress={() => router.push("/")}>

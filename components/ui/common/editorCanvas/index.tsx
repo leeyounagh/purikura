@@ -137,7 +137,7 @@ export default function EditorCanvas({
             <BackgroundImage />
             {imageUri && <DynamicPhoto source={{ uri: imageUri }} />}
             <FilterLayer />
-            <StickerLayer />
+            <StickerLayer pentoolVisible={pentoolVisible}/>
             <DrawingLayer
               ref={drawingLayerRef}
               currentColor={currentColor}

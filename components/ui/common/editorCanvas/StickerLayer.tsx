@@ -1,17 +1,24 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import React, { useState } from "react";
-import { Pressable } from 'react-native';
-import {
-  GestureHandlerRootView
-} from "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { Pressable } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StickerItem } from "./StickerItem";
 
-export const StickerLayer = () => {
+export const StickerLayer = ({
+  pentoolVisible,
+}: {
+  pentoolVisible: boolean;
+}) => {
   const stickers = useEditorStore((s) => s.stickers);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const handleDeselect = () => {
     setSelectedId(null);
   };
+  useEffect(() => {
+    if (pentoolVisible && selectedId !== null) {
+      setSelectedId(null);
+    }
+  }, [pentoolVisible]);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Pressable style={{ flex: 1 }} onPress={handleDeselect}>

@@ -35,12 +35,16 @@ const DeleteText = styled.Text`
   color: white;
   font-size: 12px;
   font-weight: bold;
+  text-align: center;
+  width: 100%;
+  padding-bottom:5px;
+  padding-left:2px;
 `;
 
 const ControlIcon = styled(Animated.View)`
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   background-color: white;
   border-radius: 14px;
   align-items: center;
@@ -126,7 +130,7 @@ export const StickerItem = ({
   const handleRotateDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, gestureState) => {
-      const rotationAmount = gestureState.dx * 0.01; 
+      const rotationAmount = gestureState.dx * 0.01;
       rotationVal.value = withTiming(rotationVal.value - rotationAmount, {
         duration: 50,
       });
@@ -177,11 +181,7 @@ export const StickerItem = ({
                 style={{ bottom: -10, left: -10 }}
                 {...handleResizeDrag.panHandlers}
               >
-                <MaterialCommunityIcons
-                  name="resize"
-                  size={18}
-                  color="black"
-                />
+                <MaterialCommunityIcons name="resize" size={18} color="black" />
               </ControlIcon>
             </>
           )}

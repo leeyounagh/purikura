@@ -86,7 +86,7 @@ export default function EditorCanvas({
 
   useEffect(() => {
     if (isSave) {
-      handleDeselect();
+      handleDeselect(); // selectedStickerId를 null로 만든다
     }
   }, [isSave]);
 

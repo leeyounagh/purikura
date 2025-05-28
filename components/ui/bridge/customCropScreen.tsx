@@ -2,21 +2,16 @@ import { useImageStore } from "@/store/useImageStore";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import {
-    Dimensions,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import {
-    Gesture,
-    GestureDetector,
-    GestureHandlerRootView,
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 import ViewShot from "react-native-view-shot";
 
@@ -36,9 +31,17 @@ export function CustomCropScreen() {
 
   const [aspectRatio, setAspectRatio] = useState({ width: 3, height: 4 });
 
-  const pinchGesture = Gesture.Pinch().onUpdate((e) => {
-    scale.value = e.scale;
-  });
+  const baseScale = useSharedValue(1);
+  const pinchScale = useSharedValue(1);
+
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((e) => {
+      pinchScale.value = e.scale;
+    })
+    .onEnd(() => {
+      baseScale.value *= pinchScale.value;
+      pinchScale.value = 1;
+    });
 
   const panGesture = Gesture.Pan().onUpdate((e) => {
     translateX.value = e.translationX;
@@ -49,7 +52,7 @@ export function CustomCropScreen() {
 
   const imageStyle = useAnimatedStyle(() => ({
     transform: [
-      { scale: scale.value },
+      { scale: baseScale.value * pinchScale.value },
       { translateX: translateX.value },
       { translateY: translateY.value },
       { rotate: `${rotation.value}deg` },
@@ -87,7 +90,9 @@ export function CustomCropScreen() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "black" ,justifyContent:"center"}}>
+    <GestureHandlerRootView
+      style={{ flex: 1, backgroundColor: "black", justifyContent: "center" }}
+    >
       <View
         style={{
           width: CROP_WIDTH,

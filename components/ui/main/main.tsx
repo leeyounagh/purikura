@@ -161,6 +161,7 @@ export default function EditorScreen() {
           onPentoolClose={closePentool}
           isSave={isSave}
           onSaveComplete={() => setIsSave(false)}
+          sheetType={sheetType}
         />
         <LogoImageContainer>
           <LogoImage

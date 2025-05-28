@@ -1,5 +1,5 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect } from "react";
 import { Pressable } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { StickerItem } from "./StickerItem";
@@ -18,7 +18,7 @@ export const StickerLayer = ({
   setSelectedId:(id: string) => void;
 }) => {
   const stickers = useEditorStore((s) => s.stickers);
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (sheetType !== "sticker" || pentoolVisible) {
       handleDeselect();
     }

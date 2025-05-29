@@ -47,8 +47,8 @@ export function CustomCropScreen() {
     });
 
   const panGesture = Gesture.Pan().onUpdate((e) => {
-    translateX.value = e.translationX;
-    translateY.value = e.translationY;
+    translateX.value = e.translationX * flipX.value;
+    translateY.value = e.translationY * flipY.value;
   });
 
   const composedGesture = Gesture.Simultaneous(pinchGesture, panGesture);

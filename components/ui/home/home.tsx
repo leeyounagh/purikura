@@ -1,4 +1,5 @@
 import { useImageStore } from "@/store/useImageStore";
+import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import styled from "styled-components/native";
@@ -16,6 +17,13 @@ const Container = styled.View`
   width: 100%;
   align-items: center;
   padding-top: 80px;
+`;
+const VersionText = styled.Text`
+  position: absolute;
+  bottom: 24px;
+  font-size: 14px;
+  color: #444;
+  opacity: 0.7;
 `;
 
 export default function HomeContainer() {
@@ -71,6 +79,7 @@ export default function HomeContainer() {
           onTakePhoto={handleTakePhoto}
           onSelectAlbum={handleSelectAlbum}
         />
+        <VersionText>v{Constants.expoConfig?.version}</VersionText>
       </Container>
     </Background>
   );

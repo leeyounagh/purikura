@@ -29,6 +29,9 @@ export function CustomCropScreen() {
   const translateY = useSharedValue(0);
   const rotation = useSharedValue(0);
 
+  const flipX = useSharedValue(1);
+  const flipY = useSharedValue(1);
+
   const [aspectRatio, setAspectRatio] = useState({ width: 3, height: 4 });
 
   const baseScale = useSharedValue(1);
@@ -52,6 +55,8 @@ export function CustomCropScreen() {
 
   const imageStyle = useAnimatedStyle(() => ({
     transform: [
+      { scaleX: flipX.value },
+      { scaleY: flipY.value },
       { scale: baseScale.value * pinchScale.value },
       { translateX: translateX.value },
       { translateY: translateY.value },
@@ -75,10 +80,22 @@ export function CustomCropScreen() {
     translateX.value = withTiming(0);
     translateY.value = withTiming(0);
     rotation.value = withTiming(0);
+    flipX.value = withTiming(1);
+    flipY.value = withTiming(1);
+    baseScale.value = 1;
+    pinchScale.value = 1;
   };
 
   const rotateImage = () => {
     rotation.value = withTiming((rotation.value + 90) % 360);
+  };
+
+  const flipHorizontally = () => {
+    flipX.value = withTiming(flipX.value === 1 ? -1 : 1);
+  };
+
+  const flipVertically = () => {
+    flipY.value = withTiming(flipY.value === 1 ? -1 : 1);
   };
 
   const toggleAspectRatio = () => {
@@ -132,7 +149,7 @@ export function CustomCropScreen() {
           justifyContent: "space-around",
           alignItems: "center",
           marginTop: 24,
-          paddingHorizontal: 40,
+          paddingHorizontal: 10,
         }}
       >
         <TouchableOpacity onPress={rotateImage}>
@@ -145,6 +162,19 @@ export function CustomCropScreen() {
 
         <TouchableOpacity onPress={toggleAspectRatio}>
           <MaterialIcons name="aspect-ratio" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={flipHorizontally}>
+          <MaterialIcons name="flip" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={flipVertically}>
+          <MaterialIcons
+            name="flip"
+            size={28}
+            color="white"
+            style={{ transform: [{ rotate: "90deg" }] }}
+          />
         </TouchableOpacity>
       </View>
 

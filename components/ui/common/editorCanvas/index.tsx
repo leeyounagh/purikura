@@ -55,18 +55,23 @@ export default function EditorCanvas({
   onPentoolClose,
   isSave = false,
   onSaveComplete,
+  sheetType,
 }: {
   pentoolVisible: boolean;
   onPentoolClose: () => void;
   isSave: boolean;
   onSaveComplete: () => void;
+  sheetType: string;
 }) {
   const imageUri = useImageStore((state) => state.imageUri);
   const viewShotRef = useRef(null);
   const drawingLayerRef = useRef<{ undo: () => void; clear: () => void }>(null);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
-  const [currentColor, setCurrentColor] = useState("");
+  const [currentColor, setCurrentColor] = useState("black");
   const [strokeWidth, setStrokeWidth] = useState(3);
+  const [selectedStickerId, setSelectedStickerId] = useState<string | null>(
+    null
+  );
   const [_, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
   useEffect(() => {
@@ -81,9 +86,15 @@ export default function EditorCanvas({
 
   useEffect(() => {
     if (isSave) {
-      handleSaveImage();
+      handleDeselect(); // selectedStickerId를 null로 만든다
     }
   }, [isSave]);
+
+  useEffect(() => {
+    if (isSave && selectedStickerId === null) {
+      handleSaveImage();
+    }
+  }, [selectedStickerId, isSave]);
 
   const handleSaveImage = async () => {
     try {
@@ -124,7 +135,9 @@ export default function EditorCanvas({
     drawingLayerRef.current?.clear();
     forceUpdate();
   };
-
+  const handleDeselect = () => {
+    setSelectedStickerId(null);
+  };
   return (
     <CanvasWrapper>
       <InnerArea>
@@ -137,7 +150,13 @@ export default function EditorCanvas({
             <BackgroundImage />
             {imageUri && <DynamicPhoto source={{ uri: imageUri }} />}
             <FilterLayer />
-            <StickerLayer />
+            <StickerLayer
+              sheetType={sheetType}
+              pentoolVisible={pentoolVisible}
+              selectedId={selectedStickerId}
+              handleDeselect={handleDeselect}
+              setSelectedId={setSelectedStickerId}
+            />
             <DrawingLayer
               ref={drawingLayerRef}
               currentColor={currentColor}

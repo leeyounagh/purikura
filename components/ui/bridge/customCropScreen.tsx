@@ -2,21 +2,16 @@ import { useImageStore } from "@/store/useImageStore";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import {
-    Dimensions,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import {
-    Gesture,
-    GestureDetector,
-    GestureHandlerRootView,
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
 } from "react-native-gesture-handler";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 import ViewShot from "react-native-view-shot";
 
@@ -34,11 +29,22 @@ export function CustomCropScreen() {
   const translateY = useSharedValue(0);
   const rotation = useSharedValue(0);
 
+  const flipX = useSharedValue(1);
+  const flipY = useSharedValue(1);
+
   const [aspectRatio, setAspectRatio] = useState({ width: 3, height: 4 });
 
-  const pinchGesture = Gesture.Pinch().onUpdate((e) => {
-    scale.value = e.scale;
-  });
+  const baseScale = useSharedValue(1);
+  const pinchScale = useSharedValue(1);
+
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((e) => {
+      pinchScale.value = e.scale;
+    })
+    .onEnd(() => {
+      baseScale.value *= pinchScale.value;
+      pinchScale.value = 1;
+    });
 
   const panGesture = Gesture.Pan().onUpdate((e) => {
     translateX.value = e.translationX;
@@ -49,7 +55,9 @@ export function CustomCropScreen() {
 
   const imageStyle = useAnimatedStyle(() => ({
     transform: [
-      { scale: scale.value },
+      { scaleX: flipX.value },
+      { scaleY: flipY.value },
+      { scale: baseScale.value * pinchScale.value },
       { translateX: translateX.value },
       { translateY: translateY.value },
       { rotate: `${rotation.value}deg` },
@@ -72,10 +80,22 @@ export function CustomCropScreen() {
     translateX.value = withTiming(0);
     translateY.value = withTiming(0);
     rotation.value = withTiming(0);
+    flipX.value = withTiming(1);
+    flipY.value = withTiming(1);
+    baseScale.value = 1;
+    pinchScale.value = 1;
   };
 
   const rotateImage = () => {
     rotation.value = withTiming((rotation.value + 90) % 360);
+  };
+
+  const flipHorizontally = () => {
+    flipX.value = withTiming(flipX.value === 1 ? -1 : 1);
+  };
+
+  const flipVertically = () => {
+    flipY.value = withTiming(flipY.value === 1 ? -1 : 1);
   };
 
   const toggleAspectRatio = () => {
@@ -87,7 +107,9 @@ export function CustomCropScreen() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, backgroundColor: "black" ,justifyContent:"center"}}>
+    <GestureHandlerRootView
+      style={{ flex: 1, backgroundColor: "black", justifyContent: "center" }}
+    >
       <View
         style={{
           width: CROP_WIDTH,
@@ -127,7 +149,7 @@ export function CustomCropScreen() {
           justifyContent: "space-around",
           alignItems: "center",
           marginTop: 24,
-          paddingHorizontal: 40,
+          paddingHorizontal: 10,
         }}
       >
         <TouchableOpacity onPress={rotateImage}>
@@ -140,6 +162,19 @@ export function CustomCropScreen() {
 
         <TouchableOpacity onPress={toggleAspectRatio}>
           <MaterialIcons name="aspect-ratio" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={flipHorizontally}>
+          <MaterialIcons name="flip" size={28} color="white" />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={flipVertically}>
+          <MaterialIcons
+            name="flip"
+            size={28}
+            color="white"
+            style={{ transform: [{ rotate: "90deg" }] }}
+          />
         </TouchableOpacity>
       </View>
 

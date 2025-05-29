@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from "react";
 import { PanResponder, PanResponderInstance, View } from "react-native";
@@ -63,9 +64,8 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
       forceUpdate();
     },
   }));
-
-  useEffect(() => {
-    panResponderRef.current = PanResponder.create({
+  const panResponder = useMemo(() => {
+    return PanResponder.create({
       onStartShouldSetPanResponder: () => !disabled,
       onMoveShouldSetPanResponder: () => !disabled,
       onPanResponderGrant: (e) => {
@@ -100,7 +100,7 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
     <Container>
       <View
         style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }}
-        {...(panResponderRef.current?.panHandlers ?? {})}
+        {...panResponder.panHandlers}
       >
         <Svg style={{ flex: 1 }}>
           {pathsRef.current.map((item, idx) => (

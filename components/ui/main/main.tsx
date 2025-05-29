@@ -1,5 +1,5 @@
 import { useEditorStore } from "@/store/useEditorStore";
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { FlatList, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import EditorCanvas from "../common/editorCanvas";
@@ -48,34 +48,32 @@ export default function EditorScreen() {
     setPentoolVisible(false);
   };
 
-  useEffect(() => {
-    if (["background", "sticker", "filter"].includes(sheetType)) {
-      flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
-    }
+  useLayoutEffect(() => {
+    if (!["background", "sticker", "filter"].includes(sheetType)) return;
+    setSheetItems([]);
+    const dataMap: Record<string, any[]> = {
+      background: bgs,
+      sticker: stickers,
+      filter: filters,
+    };
+
+    const initialItems = dataMap[sheetType].slice(0, ITEMS_PER_PAGE);
+    setSheetItems(initialItems);
+    setPage(1);
+    flatListRef.current?.scrollToOffset({ animated: false, offset: 0 });
+
+    setTimeout(() => {
+      loadMoreItems(sheetType, 2);
+    }, 100);
   }, [sheetType]);
 
   const handleOpenSheet = (type: string) => {
     const isSheetType = ["background", "sticker", "filter"].includes(type);
 
     if (isSheetType) {
-      setPage(1);
       setShowSheet(true);
       setSheetType(type);
       setPentoolVisible(false);
-
-      const dataMap: Record<string, any[]> = {
-        background: bgs,
-        sticker: stickers,
-        filter: filters,
-      };
-
-      const initialItems = dataMap[type].slice(0, ITEMS_PER_PAGE);
-      setSheetItems(initialItems);
-
-      setTimeout(() => {
-        loadMoreItems();
-      }, 100);
-
       return;
     }
 
@@ -94,8 +92,7 @@ export default function EditorScreen() {
     setShowSheet(false);
   };
 
-  const loadMoreItems = () => {
-    const nextPage = page + 1;
+  const loadMoreItems = (type = sheetType, nextPage = page + 1) => {
     const start = (nextPage - 1) * ITEMS_PER_PAGE;
     const end = nextPage * ITEMS_PER_PAGE;
 
@@ -105,7 +102,7 @@ export default function EditorScreen() {
       filter: filters,
     };
 
-    const items = dataMap[sheetType];
+    const items = dataMap[type];
     if (!items) return;
 
     if (end > sheetItems.length && start < items.length) {
@@ -154,7 +151,7 @@ export default function EditorScreen() {
                 />
               </TouchableOpacity>
             )}
-            onEndReached={loadMoreItems}
+            onEndReached={() => loadMoreItems()}
             onEndReachedThreshold={0.5}
             showsHorizontalScrollIndicator={false}
           />
@@ -164,6 +161,7 @@ export default function EditorScreen() {
           onPentoolClose={closePentool}
           isSave={isSave}
           onSaveComplete={() => setIsSave(false)}
+          sheetType={sheetType}
         />
         <LogoImageContainer>
           <LogoImage

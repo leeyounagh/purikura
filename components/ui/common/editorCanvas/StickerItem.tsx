@@ -1,6 +1,6 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { PanResponder, TouchableWithoutFeedback, View } from "react-native";
+import { PanResponder, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
@@ -37,8 +37,6 @@ const DeleteText = styled.Text`
   font-weight: bold;
   text-align: center;
   width: 100%;
-  padding-bottom:5px;
-  padding-left:2px;
 `;
 
 const ControlIcon = styled(Animated.View)`
@@ -124,7 +122,8 @@ export const StickerItem = ({
 
   const combinedGesture = Gesture.Simultaneous(
     panGesture,
-    Gesture.Simultaneous(pinchGesture, rotationGesture)
+    pinchGesture,
+    rotationGesture
   );
 
   const handleRotateDrag = PanResponder.create({
@@ -152,13 +151,13 @@ export const StickerItem = ({
     <GestureDetector gesture={combinedGesture}>
       <Animated.View style={[{ position: "absolute" }, animatedStyle]}>
         <View style={{ alignItems: "center" }}>
-          <TouchableWithoutFeedback onPress={() => onSelect(id)}>
+          <Pressable onPress={() => onSelect(id)}>
             <StickerImage
               source={source}
               isSelected={isSelected}
               resizeMode="contain"
             />
-          </TouchableWithoutFeedback>
+          </Pressable>
 
           {isSelected && (
             <>

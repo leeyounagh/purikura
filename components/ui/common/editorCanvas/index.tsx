@@ -74,6 +74,7 @@ export default function EditorCanvas({
   );
   const [_, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
+
   useEffect(() => {
     if (imageUri) {
       RNImage.getSize(
@@ -111,6 +112,7 @@ export default function EditorCanvas({
 
       await MediaLibrary.saveToLibraryAsync(uri);
       Alert.alert("저장 완료", "사진이 갤러리에 저장되었습니다.");
+      resetEditor()
     } catch (e) {
       console.error("저장 실패:", e);
       Alert.alert("저장 실패", "사진을 저장할 수 없습니다.");

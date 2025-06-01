@@ -59,6 +59,7 @@
     "eas-cli": "^16.6.2",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~9.2.0",
+    "identity-obj-proxy": "^3.0.0",
     "jest-expo": "^53.0.5",
     "react-test-renderer": "^19.0.0",
     "typescript": "~5.8.3"
@@ -69,8 +70,11 @@
       "@testing-library/jest-native/extend-expect"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native|react-clone-referenced-element|@react-navigation|expo(nent)?|@expo(nent)?|expo-modules-core|expo-image-picker|expo-media-library|expo-constants|expo-asset|expo-router|expo-linking)/)"
-    ]
+      "node_modules/(?!(jest-)?react-native|@react-native|react-clone-referenced-element|@react-navigation|expo(nent)?|@expo(nent)?|expo-modules-core|expo-image-picker|expo-media-library|expo-constants|expo-asset|expo-router|expo-linking|expo-font|@expo/vector-icons|@react-native/virtualized-lists|react-native-gesture-handler)"
+    ],
+    "moduleNameMapper": {
+      "^react-native-gesture-handler$": "<rootDir>/__mocks__/react-native-gesture-handler.js"
+    }
   },
   "private": true
 }

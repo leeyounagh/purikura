@@ -152,7 +152,7 @@ export function CustomCropScreen() {
           paddingHorizontal: 10,
         }}
       >
-        <TouchableOpacity onPress={rotateImage}>
+        <TouchableOpacity onPress={rotateImage} testID="rotate-button">
           <MaterialIcons name="rotate-right" size={28} color="white" />
         </TouchableOpacity>
 
@@ -160,15 +160,24 @@ export function CustomCropScreen() {
           <MaterialIcons name="refresh" size={28} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={toggleAspectRatio}>
+        <TouchableOpacity
+          onPress={toggleAspectRatio}
+          testID="aspect-ratio-button"
+        >
           <MaterialIcons name="aspect-ratio" size={28} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={flipHorizontally}>
+        <TouchableOpacity
+          onPress={flipHorizontally}
+          testID="flip-horizontal-button"
+        >
           <MaterialIcons name="flip" size={28} color="white" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={flipVertically}>
+        <TouchableOpacity
+          onPress={flipVertically}
+          testID="flip-vertical-button"
+        >
           <MaterialIcons
             name="flip"
             size={28}

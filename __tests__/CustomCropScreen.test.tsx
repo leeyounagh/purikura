@@ -61,7 +61,7 @@ jest.mock("expo-router", () => ({
 }));
 
 // 완료 버튼 누를때까지의 흐름 테스트트
-describe("CustomCropScreen - Done button", () => {
+describe("CustomCropScreen - 완료 버튼", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockCapture.mockResolvedValue("mocked-capture-uri");
@@ -74,20 +74,20 @@ describe("CustomCropScreen - Done button", () => {
     );
   });
 
-  it('captures image and navigates to "/main" on Done press', async () => {
+  it('"완료" 버튼을 누르면 캡처하고 "/main" 페이지로 이동한다', async () => {
     const { getByText } = render(<CustomCropScreen />);
     fireEvent.press(getByText("Done"));
 
     await waitFor(() => {
-      expect(mockCapture).toHaveBeenCalled();
-      expect(mockSetImageUri).toHaveBeenCalledWith("mocked-capture-uri");
-      expect(mockPush).toHaveBeenCalledWith("/main");
+      expect(mockCapture).toHaveBeenCalled(); // 이미지 캡처가 호출됨
+      expect(mockSetImageUri).toHaveBeenCalledWith("mocked-capture-uri"); // 상태 저장
+      expect(mockPush).toHaveBeenCalledWith("/main"); // 페이지 이동
     });
   });
 });
 
 //ui 버튼들을 눌렀을때 기능이 제대로 작동하는지 확인하는 테스트
-describe("CustomCropScreen - UI interaction", () => {
+describe("CustomCropScreen - UI 상호작용", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockCapture.mockResolvedValue("mocked-capture-uri");
@@ -100,28 +100,28 @@ describe("CustomCropScreen - UI interaction", () => {
     );
   });
 
-  it("handles rotate-right button press", () => {
+  it('"오른쪽 회전" 버튼을 눌렀을 때 정상 작동한다', () => {
     const { getByTestId } = render(<CustomCropScreen />);
     const rotateButton = getByTestId("rotate-button");
     fireEvent.press(rotateButton);
     expect(true).toBeTruthy();
   });
 
-  it("handles flip-horizontal button press", () => {
+  it('"좌우 반전" 버튼을 눌렀을 때 정상 작동한다', () => {
     const { getByTestId } = render(<CustomCropScreen />);
     const flipButton = getByTestId("flip-horizontal-button");
     fireEvent.press(flipButton);
     expect(true).toBeTruthy();
   });
 
-  it("handles flip-vertical button press", () => {
+  it('"상하 반전" 버튼을 눌렀을 때 정상 작동한다', () => {
     const { getByTestId } = render(<CustomCropScreen />);
     const flipButton = getByTestId("flip-vertical-button");
     fireEvent.press(flipButton);
     expect(true).toBeTruthy();
   });
 
-  it("toggles aspect ratio on button press", () => {
+  it('"비율 변경" 버튼을 눌렀을 때 정상 작동한다', () => {
     const { getByTestId } = render(<CustomCropScreen />);
     const aspectButton = getByTestId("aspect-ratio-button");
     fireEvent.press(aspectButton);

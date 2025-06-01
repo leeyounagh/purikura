@@ -99,6 +99,7 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
   return (
     <Container>
       <View
+        testID="drawing-container"
         style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }}
         {...panResponder.panHandlers}
       >

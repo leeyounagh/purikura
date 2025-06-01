@@ -1,19 +1,20 @@
 // __mocks__/react-native-gesture-handler.js
-const gestureMock = {
-  onUpdate: jest.fn().mockReturnThis(),
-  onEnd: jest.fn().mockReturnThis(),
-  onStart: jest.fn().mockReturnThis(),
-  onTouchesMove: jest.fn().mockReturnThis(),
-  onTouchesDown: jest.fn().mockReturnThis(),
-  onFinalize: jest.fn().mockReturnThis(),
+
+const View = require('react-native').View;
+
+const mockGesture = {
+  onStart: jest.fn(() => mockGesture),
+  onUpdate: jest.fn(() => mockGesture),
+  onEnd: jest.fn(() => mockGesture),
 };
 
 module.exports = {
-  GestureHandlerRootView: ({ children }) => children,
+  GestureHandlerRootView: View,
   GestureDetector: ({ children }) => children,
   Gesture: {
-    Pan: () => ({ ...gestureMock }),
-    Pinch: () => ({ ...gestureMock }),
-    Simultaneous: (...gestures) => gestures,
+    Pan: jest.fn(() => mockGesture),
+    Pinch: jest.fn(() => mockGesture),
+    Rotation: jest.fn(() => mockGesture),
+    Simultaneous: jest.fn(() => mockGesture),
   },
 };

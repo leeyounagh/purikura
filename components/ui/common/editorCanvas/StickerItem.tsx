@@ -60,7 +60,7 @@ type Props = {
   onSelect: (id: string) => void;
 };
 
-export const StickerItem = ({
+export function StickerItem({
   id,
   source,
   x,
@@ -68,7 +68,7 @@ export const StickerItem = ({
   scale,
   isSelected,
   onSelect,
-}: Props) => {
+}: Props) {
   const updatePosition = useEditorStore((s) => s.updateStickerPosition);
   const updateScale = useEditorStore((s) => s.updateStickerScale);
   const removeSticker = useEditorStore((s) => s.removeSticker);
@@ -156,18 +156,23 @@ export const StickerItem = ({
               source={source}
               isSelected={isSelected}
               resizeMode="contain"
+              testID="sticker-image"
             />
           </Pressable>
 
           {isSelected && (
             <>
-              <DeleteButton onPress={() => removeSticker(id)}>
+              <DeleteButton
+                onPress={() => removeSticker(id)}
+                testID="delete-button"
+              >
                 <DeleteText>X</DeleteText>
               </DeleteButton>
 
               <ControlIcon
                 style={{ bottom: -10, right: -10 }}
                 {...handleRotateDrag.panHandlers}
+                testID="rotate-icon"
               >
                 <MaterialCommunityIcons
                   name="rotate-right"
@@ -179,6 +184,7 @@ export const StickerItem = ({
               <ControlIcon
                 style={{ bottom: -10, left: -10 }}
                 {...handleResizeDrag.panHandlers}
+                testID="resize-icon"
               >
                 <MaterialCommunityIcons name="resize" size={18} color="black" />
               </ControlIcon>
@@ -188,4 +194,4 @@ export const StickerItem = ({
       </Animated.View>
     </GestureDetector>
   );
-};
+}

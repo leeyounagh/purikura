@@ -109,7 +109,7 @@ npm run android    # 안드로이드 시뮬레이터 또는 디바이스
 
 1. **`app/index.tsx`**: 앱 진입점. `<HomeContainer />`를 통해 초기 화면 렌더링.
 2. **`_layout.tsx`**: Expo Router 기반의 Stack 네비게게이션 정의.
-3. **`main.tsx`**: 실제 사진 꾸꾸미기 UI 구현 예정 위치.
+3. **`main.tsx`**: 실제 사진 꾸미기 UI 구현 예정 위치.
 4. **Zustand Store**:
 
    * `useEditorStore`: 배경, 스티커, 필터 상태 관리
@@ -137,7 +137,7 @@ npm run android    # 안드로이드 시뮬레이터 또는 디바이스
 
 | 패키지                      | 설명                |
 | ------------------------ | ----------------- |
-| `expo-router`            | 라우팅팅 시스템          |
+| `expo-router`            | 라우팅 시스템          |
 | `zustand`                |  전역 상태 관리 |
 | `react-native-view-shot` | 화면 저장/캡처        |
 | `expo-image-picker`      | 사진 선택             |

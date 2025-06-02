@@ -150,7 +150,7 @@ export function StickerItem({
   return (
     <GestureDetector gesture={combinedGesture}>
       <Animated.View style={[{ position: "absolute" }, animatedStyle]}>
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center" }} testID={`sticker-${id}`}>
           <Pressable onPress={() => onSelect(id)}>
             <StickerImage
               source={source}

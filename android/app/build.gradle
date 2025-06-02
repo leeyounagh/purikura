@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.leesuyoen.purisnap'
+    namespace 'com.leesuyoen.purisnapapp'
     defaultConfig {
-        applicationId 'com.leesuyoen.purisnap'
+        applicationId 'com.leesuyoen.purisnapapp'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

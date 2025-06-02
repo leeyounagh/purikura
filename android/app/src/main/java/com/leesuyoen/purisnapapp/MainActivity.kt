@@ -1,4 +1,4 @@
-package com.leesuyoen.purisnap
+package com.leesuyoen.purisnapapp
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

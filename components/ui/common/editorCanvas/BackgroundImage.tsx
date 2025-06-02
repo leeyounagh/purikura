@@ -12,5 +12,7 @@ const Background = styled.Image`
 export const BackgroundImage = () => {
   const backgroundUri = useEditorStore((state) => state.backgroundUri);
 
-  return backgroundUri ? <Background source={backgroundUri} /> : null;
+  return backgroundUri ? (
+    <Background source={backgroundUri} testID="background-image" />
+  ) : null;
 };

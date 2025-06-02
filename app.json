@@ -20,7 +20,7 @@
         "backgroundColor": "#ffdce6"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.syuzzang.purisnapapp",
+      "package": "com.leesuyoen.purisnapapp",
       "runtimeVersion": "1.0.1",
       "serviceAccountKeyPath": "./keys/purisnap-a2cdceea2d96.json",
       "versionCode": 2,

@@ -1,4 +1,4 @@
-import { DrawingLayer } from "@/components/ui/common/editorCanvas/drawingLayer";
+import { DrawingLayer } from "@/components/ui/common/editorCanvas/DrawingLayer";
 import { fireEvent, render } from "@testing-library/react-native";
 import React, { createRef } from "react";
 import { GestureResponderEvent } from "react-native";

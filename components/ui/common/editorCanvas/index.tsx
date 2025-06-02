@@ -6,11 +6,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, Image as RNImage } from "react-native";
 import ViewShot, { captureRef } from "react-native-view-shot";
 import styled from "styled-components/native";
-import { BackgroundImage } from "./backgroundImage";
-import { DrawingLayer } from "./drawingLayer";
-import { DrawingToolbar } from "./drawingToolbar";
+import { BackgroundImage } from "./BackgroundImage";
+import { DrawingLayer } from "./DrawingLayer";
 import { FilterLayer } from "./filterLayer";
-import { StickerLayer } from "./stickerLayer";
+import { StickerLayer } from "./StickerLayer";
 
 const CanvasWrapper = styled.View`
   flex: 1;

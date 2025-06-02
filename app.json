@@ -20,9 +20,11 @@
         "backgroundColor": "#ffdce6"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.syuzzang.purisnapapp",
-      "runtimeVersion": "1.0.0",
-      "serviceAccountKeyPath": "./keys/purisnap-a2cdceea2d96.json"
+      "package": "com.leesuyoen.purisnapapp",
+      "runtimeVersion": "1.0.1",
+      "serviceAccountKeyPath": "./keys/purisnap-a2cdceea2d96.json",
+      "versionCode": 2,
+      "versionName": "1.0.1"
     },
     "web": {
       "bundler": "metro",

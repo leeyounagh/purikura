@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import HomeButton from './homeButton';
+import styled from "styled-components/native";
+import HomeButton from "./homeButton";
 
 const ButtonContainer = styled.View`
   flex-direction: row;
@@ -18,11 +18,13 @@ export default function ActionButtons({
   return (
     <ButtonContainer>
       <HomeButton
-        icon={require('../../../assets/images/common/home/button/take_photo.png')}
+        testID={"open-take-photo-button"}
+        icon={require("../../../assets/images/common/home/button/take_photo.png")}
         onPress={onTakePhoto}
       />
       <HomeButton
-        icon={require('../../../assets/images/common/home/button/photoAlbum.png')}
+        testID={"open-photoAlbum-button"}
+        icon={require("../../../assets/images/common/home/button/photoAlbum.png")}
         onPress={onSelectAlbum}
       />
     </ButtonContainer>

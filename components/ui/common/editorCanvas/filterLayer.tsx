@@ -14,5 +14,5 @@ const FilterImage = styled.Image`
 
 export function FilterLayer() {
   const filter = useEditorStore((state) => state.filter);
-  return filter ? <FilterImage source={filter} /> : null;
+  return filter ? <FilterImage source={filter} testID="filter-image"/> : null;
 }

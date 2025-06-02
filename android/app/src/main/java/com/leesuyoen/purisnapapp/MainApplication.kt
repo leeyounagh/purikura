@@ -1,4 +1,4 @@
-package com.leesuyoen.purisnap
+package com.leesuyoen.purisnapapp
 
 import android.app.Application
 import android.content.res.Configuration

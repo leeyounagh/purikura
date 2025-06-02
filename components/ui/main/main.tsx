@@ -141,6 +141,7 @@ export default function EditorScreen() {
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => handleSelectItem(item)}>
                 <Image
+                  testID={`${item.label}`}
                   source={item.source}
                   style={{
                     width: 80,

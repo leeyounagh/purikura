@@ -41,25 +41,25 @@ export default function TabBar({ onOpenModal }: Props) {
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("background")}>
+      <TabButton onPress={() => onOpenModal("background")} testID="background-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/background3.png")}
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("sticker")}>
+      <TabButton onPress={() => onOpenModal("sticker")} testID="sticker-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/sticker3.png")}
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("pen")}>
+      <TabButton onPress={() => onOpenModal("pen")} testID="pen-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/pen3.png")}
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("filter")}>
+      <TabButton onPress={() => onOpenModal("filter")} testID="filter-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/filter3.png")}
         />

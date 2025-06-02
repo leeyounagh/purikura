@@ -22,11 +22,12 @@ const ButtonImage = styled.Image`
 type Props = {
   icon: any; 
   onPress: () => void;
+  testID:string;
 };
 
-export default function HomeButton({ icon, onPress }: Props) {
+export default function HomeButton({ icon, onPress,testID }: Props) {
   return (
-    <ButtonBox onPress={onPress}>
+    <ButtonBox onPress={onPress} testID={testID}> 
       <ButtonImage source={icon}  />
     </ButtonBox>
   );

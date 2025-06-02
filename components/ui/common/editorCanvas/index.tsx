@@ -8,6 +8,7 @@ import ViewShot, { captureRef } from "react-native-view-shot";
 import styled from "styled-components/native";
 import { BackgroundImage } from "./BackgroundImage";
 import { DrawingLayer } from "./DrawingLayer";
+import { DrawingToolbar } from "./drawingToolbar";
 import { FilterLayer } from "./filterLayer";
 import { StickerLayer } from "./StickerLayer";
 

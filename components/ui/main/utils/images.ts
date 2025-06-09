@@ -344,6 +344,256 @@ export const stickers = [
     label: "스티커69",
     source: require("../../../../assets/images/common/sticker/69.png"),
   },
+    {
+    id: "st70",
+    label: "스티커70",
+    source: require("../../../../assets/images/common/sticker/70.png"),
+  },
+  {
+    id: "st71",
+    label: "스티커71",
+    source: require("../../../../assets/images/common/sticker/71.png"),
+  },
+  {
+    id: "st72",
+    label: "스티커72",
+    source: require("../../../../assets/images/common/sticker/72.png"),
+  },
+  {
+    id: "st73",
+    label: "스티커73",
+    source: require("../../../../assets/images/common/sticker/73.png"),
+  },
+  {
+    id: "st74",
+    label: "스티커74",
+    source: require("../../../../assets/images/common/sticker/74.png"),
+  },
+  {
+    id: "st75",
+    label: "스티커75",
+    source: require("../../../../assets/images/common/sticker/75.png"),
+  },
+  {
+    id: "st76",
+    label: "스티커76",
+    source: require("../../../../assets/images/common/sticker/76.png"),
+  },
+  {
+    id: "st77",
+    label: "스티커77",
+    source: require("../../../../assets/images/common/sticker/77.png"),
+  },
+  {
+    id: "st78",
+    label: "스티커78",
+    source: require("../../../../assets/images/common/sticker/78.png"),
+  },
+  {
+    id: "st79",
+    label: "스티커79",
+    source: require("../../../../assets/images/common/sticker/79.png"),
+  },
+  {
+    id: "st80",
+    label: "스티커80",
+    source: require("../../../../assets/images/common/sticker/80.png"),
+  },
+  {
+    id: "st81",
+    label: "스티커81",
+    source: require("../../../../assets/images/common/sticker/81.png"),
+  },
+  {
+    id: "st82",
+    label: "스티커82",
+    source: require("../../../../assets/images/common/sticker/82.png"),
+  },
+  {
+    id: "st83",
+    label: "스티커83",
+    source: require("../../../../assets/images/common/sticker/83.png"),
+  },
+  {
+    id: "st84",
+    label: "스티커84",
+    source: require("../../../../assets/images/common/sticker/84.png"),
+  },
+  {
+    id: "st85",
+    label: "스티커85",
+    source: require("../../../../assets/images/common/sticker/85.png"),
+  },
+  {
+    id: "st86",
+    label: "스티커86",
+    source: require("../../../../assets/images/common/sticker/86.png"),
+  },
+  {
+    id: "st87",
+    label: "스티커87",
+    source: require("../../../../assets/images/common/sticker/87.png"),
+  },
+  {
+    id: "st88",
+    label: "스티커88",
+    source: require("../../../../assets/images/common/sticker/88.png"),
+  },
+  {
+    id: "st89",
+    label: "스티커89",
+    source: require("../../../../assets/images/common/sticker/89.png"),
+  },
+  {
+    id: "st90",
+    label: "스티커90",
+    source: require("../../../../assets/images/common/sticker/90.png"),
+  },
+  {
+    id: "st91",
+    label: "스티커91",
+    source: require("../../../../assets/images/common/sticker/91.png"),
+  },
+  {
+    id: "st92",
+    label: "스티커92",
+    source: require("../../../../assets/images/common/sticker/92.png"),
+  },
+  {
+    id: "st93",
+    label: "스티커93",
+    source: require("../../../../assets/images/common/sticker/93.png"),
+  },
+  {
+    id: "st94",
+    label: "스티커94",
+    source: require("../../../../assets/images/common/sticker/94.png"),
+  },
+  {
+    id: "st95",
+    label: "스티커95",
+    source: require("../../../../assets/images/common/sticker/95.png"),
+  },
+  {
+    id: "st96",
+    label: "스티커96",
+    source: require("../../../../assets/images/common/sticker/96.png"),
+  },
+  {
+    id: "st97",
+    label: "스티커97",
+    source: require("../../../../assets/images/common/sticker/97.png"),
+  },
+  {
+    id: "st98",
+    label: "스티커98",
+    source: require("../../../../assets/images/common/sticker/98.png"),
+  },
+  {
+    id: "st99",
+    label: "스티커99",
+    source: require("../../../../assets/images/common/sticker/99.png"),
+  },
+  {
+    id: "st100",
+    label: "스티커100",
+    source: require("../../../../assets/images/common/sticker/100.png"),
+  },
+  {
+    id: "st101",
+    label: "스티커101",
+    source: require("../../../../assets/images/common/sticker/101.png"),
+  },
+  {
+    id: "st102",
+    label: "스티커102",
+    source: require("../../../../assets/images/common/sticker/102.png"),
+  },
+  {
+    id: "st103",
+    label: "스티커103",
+    source: require("../../../../assets/images/common/sticker/103.png"),
+  },
+  {
+    id: "st104",
+    label: "스티커104",
+    source: require("../../../../assets/images/common/sticker/104.png"),
+  },
+  {
+    id: "st105",
+    label: "스티커105",
+    source: require("../../../../assets/images/common/sticker/105.png"),
+  },
+  {
+    id: "st106",
+    label: "스티커106",
+    source: require("../../../../assets/images/common/sticker/106.png"),
+  },
+  {
+    id: "st107",
+    label: "스티커107",
+    source: require("../../../../assets/images/common/sticker/107.png"),
+  },
+  {
+    id: "st108",
+    label: "스티커108",
+    source: require("../../../../assets/images/common/sticker/108.png"),
+  },
+  {
+    id: "st109",
+    label: "스티커109",
+    source: require("../../../../assets/images/common/sticker/109.png"),
+  },
+  {
+    id: "st110",
+    label: "스티커110",
+    source: require("../../../../assets/images/common/sticker/110.png"),
+  },
+  {
+    id: "st111",
+    label: "스티커111",
+    source: require("../../../../assets/images/common/sticker/111.png"),
+  },
+  {
+    id: "st112",
+    label: "스티커112",
+    source: require("../../../../assets/images/common/sticker/112.png"),
+  },
+  {
+    id: "st113",
+    label: "스티커113",
+    source: require("../../../../assets/images/common/sticker/113.png"),
+  },
+  {
+    id: "st114",
+    label: "스티커114",
+    source: require("../../../../assets/images/common/sticker/114.png"),
+  },
+  {
+    id: "st115",
+    label: "스티커115",
+    source: require("../../../../assets/images/common/sticker/115.png"),
+  },
+  {
+    id: "st116",
+    label: "스티커116",
+    source: require("../../../../assets/images/common/sticker/116.png"),
+  },
+  {
+    id: "st117",
+    label: "스티커117",
+    source: require("../../../../assets/images/common/sticker/117.png"),
+  },
+  {
+    id: "st118",
+    label: "스티커118",
+    source: require("../../../../assets/images/common/sticker/118.png"),
+  },
+  {
+    id: "st119",
+    label: "스티커119",
+    source: require("../../../../assets/images/common/sticker/119.png"),
+  },
 ];
 
 export const bgs = [

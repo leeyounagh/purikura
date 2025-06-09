@@ -22,9 +22,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.leesuyoen.purisnapapp",
       "runtimeVersion": "1.1.2",
-      "serviceAccountKeyPath": "./keys/purisnap-a2cdceea2d96.json",
-      "versionCode": 2,
-      "versionName": "1.1.2"
+      "versionCode": 5
     },
     "web": {
       "bundler": "metro",

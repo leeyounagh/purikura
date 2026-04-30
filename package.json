@@ -42,14 +42,16 @@
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-google-mobile-ads": "^14.11.0",
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
     "react-native-view-shot": "4.0.3",
+    "react-native-web": "^0.20.0",
     "styled-components": "^6.1.18",
     "zustand": "^5.0.5",
-    "react-native-web": "^0.20.0"
+    "expo-linear-gradient": "~14.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -58,6 +60,7 @@
     "@testing-library/react-native": "^13.2.0",
     "@types/jest": "^29.5.14",
     "@types/react": "~19.0.10",
+    "@types/react-native": "^0.73.0",
     "@types/react-test-renderer": "^19.0.0",
     "babel-jest": "^30.0.0-beta.3",
     "eas-cli": "^16.6.2",

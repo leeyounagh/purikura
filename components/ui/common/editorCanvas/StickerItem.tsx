@@ -1,12 +1,12 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useRef } from "react";
 import { PanResponder, Pressable, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 import styled from "styled-components/native";
 
@@ -56,6 +56,7 @@ type Props = {
   x: number;
   y: number;
   scale: number;
+  rotation: number;
   isSelected: boolean;
   onSelect: (id: string) => void;
 };
@@ -66,20 +67,32 @@ export function StickerItem({
   x,
   y,
   scale,
+  rotation,
   isSelected,
   onSelect,
 }: Props) {
   const updatePosition = useEditorStore((s) => s.updateStickerPosition);
   const updateScale = useEditorStore((s) => s.updateStickerScale);
+  const updateRotation = useEditorStore((s) => s.updateStickerRotation);
   const removeSticker = useEditorStore((s) => s.removeSticker);
 
   const offsetX = useSharedValue(x);
   const offsetY = useSharedValue(y);
   const scaleVal = useSharedValue(scale);
-  const rotationVal = useSharedValue(0);
+  const rotationVal = useSharedValue(rotation);
 
   let startScale = scale;
   let startRotation = 0;
+  let rotateStartVal = 0;
+  let resizeStartVal = scale;
+
+  const stickerViewRef = useRef<View>(null);
+  const rotateState = useRef({
+    centerX: 0,
+    centerY: 0,
+    startAngle: 0,
+    ready: false,
+  });
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -87,6 +100,13 @@ export function StickerItem({
       { translateY: offsetY.value },
       { scale: scaleVal.value },
       { rotateZ: `${rotationVal.value}rad` },
+    ],
+  }));
+
+  const controlIconCounterStyle = useAnimatedStyle(() => ({
+    transform: [
+      { rotateZ: `${-rotationVal.value}rad` },
+      { scale: 1 / scaleVal.value },
     ],
   }));
 
@@ -118,6 +138,9 @@ export function StickerItem({
     })
     .onUpdate((e) => {
       rotationVal.value = startRotation + e.rotation;
+    })
+    .onEnd(() => {
+      runOnJS(updateRotation)(id, rotationVal.value);
     });
 
   const combinedGesture = Gesture.Simultaneous(
@@ -128,18 +151,44 @@ export function StickerItem({
 
   const handleRotateDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, gestureState) => {
-      const rotationAmount = gestureState.dx * 0.01;
-      rotationVal.value = withTiming(rotationVal.value - rotationAmount, {
-        duration: 50,
+    onPanResponderGrant: (e) => {
+      rotateStartVal = rotationVal.value;
+      rotateState.current.ready = false;
+      stickerViewRef.current?.measureInWindow((x, y, width, height) => {
+        const cx = x + width / 2;
+        const cy = y + height / 2;
+        rotateState.current = {
+          centerX: cx,
+          centerY: cy,
+          startAngle: Math.atan2(
+            e.nativeEvent.pageY - cy,
+            e.nativeEvent.pageX - cx
+          ),
+          ready: true,
+        };
       });
+    },
+    onPanResponderMove: (e) => {
+      if (!rotateState.current.ready) return;
+      const { centerX, centerY, startAngle } = rotateState.current;
+      const currentAngle = Math.atan2(
+        e.nativeEvent.pageY - centerY,
+        e.nativeEvent.pageX - centerX
+      );
+      rotationVal.value = rotateStartVal + (currentAngle - startAngle);
+    },
+    onPanResponderRelease: () => {
+      runOnJS(updateRotation)(id, rotationVal.value);
     },
   });
 
   const handleResizeDrag = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
+      resizeStartVal = scaleVal.value;
+    },
     onPanResponderMove: (_, gestureState) => {
-      const newScale = scaleVal.value + gestureState.dx * 0.003;
+      const newScale = resizeStartVal + gestureState.dx * 0.003;
       scaleVal.value = Math.max(0.3, Math.min(3, newScale));
     },
     onPanResponderRelease: () => {
@@ -149,7 +198,10 @@ export function StickerItem({
 
   return (
     <GestureDetector gesture={combinedGesture}>
-      <Animated.View style={[{ position: "absolute" }, animatedStyle]}>
+      <Animated.View
+        ref={stickerViewRef}
+        style={[{ position: "absolute" }, animatedStyle]}
+      >
         <View style={{ alignItems: "center" }} testID={`sticker-${id}`}>
           <Pressable onPress={() => onSelect(id)}>
             <StickerImage
@@ -170,7 +222,7 @@ export function StickerItem({
               </DeleteButton>
 
               <ControlIcon
-                style={{ bottom: -10, right: -10 }}
+                style={[{ bottom: -10, right: -10 }, controlIconCounterStyle]}
                 {...handleRotateDrag.panHandlers}
                 testID="rotate-icon"
               >
@@ -182,7 +234,7 @@ export function StickerItem({
               </ControlIcon>
 
               <ControlIcon
-                style={{ bottom: -10, left: -10 }}
+                style={[{ bottom: -10, left: -10 }, controlIconCounterStyle]}
                 {...handleResizeDrag.panHandlers}
                 testID="resize-icon"
               >

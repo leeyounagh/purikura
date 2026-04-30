@@ -34,6 +34,7 @@ export const StickerLayer = ({
             x={sticker.x}
             y={sticker.y}
             scale={sticker.scale}
+            rotation={sticker.rotation}
             isSelected={selectedId === sticker.id}
             onSelect={setSelectedId}
           />

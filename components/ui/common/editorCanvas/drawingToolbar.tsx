@@ -6,6 +6,12 @@ import styled from "styled-components/native";
 
 const COLORS = ["hotpink", "red", "blue", "black", "orange"];
 
+const SPECIAL_PENS = [
+  { id: "glitter", label: "✨", bg: "#FF1493" },
+  { id: "neon", label: "💡", bg: "#00FFFF" },
+  { id: "rainbow", label: "🌈", bg: "#9370DB" },
+];
+
 const BottomBar = styled.View`
   position: absolute;
   bottom: 0px;
@@ -37,6 +43,24 @@ const ColorButton = styled.TouchableOpacity<{ selected: boolean; bg: string }>`
   background-color: ${(props) => props.bg};
   border-width: ${(props) => (props.selected ? 2 : 0)}px;
   border-color: white;
+`;
+
+const SpecialButton = styled.TouchableOpacity<{
+  selected: boolean;
+  bg: string;
+}>`
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  background-color: ${(props) => props.bg};
+  border-width: ${(props) => (props.selected ? 2 : 0)}px;
+  border-color: white;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ButtonEmoji = styled.Text`
+  font-size: 14px;
 `;
 
 const ControlIcon = styled.TouchableOpacity`
@@ -94,6 +118,16 @@ export const DrawingToolbar = ({
             selected={currentColor === color}
             onPress={() => onChangeColor(color)}
           />
+        ))}
+        {SPECIAL_PENS.map((pen) => (
+          <SpecialButton
+            key={pen.id}
+            bg={pen.bg}
+            selected={currentColor === pen.id}
+            onPress={() => onChangeColor(pen.id)}
+          >
+            <ButtonEmoji>{pen.label}</ButtonEmoji>
+          </SpecialButton>
         ))}
       </Palette>
 

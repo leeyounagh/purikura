@@ -6,7 +6,13 @@ import React, {
   useRef,
 } from "react";
 import { PanResponder, PanResponderInstance, View } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import Svg, {
+  Circle,
+  Defs,
+  LinearGradient,
+  Path,
+  Stop,
+} from "react-native-svg";
 import styled from "styled-components/native";
 
 const Container = styled.View`
@@ -29,13 +35,116 @@ type DrawingLayerProps = {
   disabled?: boolean;
 };
 
+const parsePathPoints = (commands: string[]) => {
+  const points: { x: number; y: number }[] = [];
+  for (const cmd of commands) {
+    const match = cmd.match(/[ML]([\d.-]+),([\d.-]+)/);
+    if (match) {
+      points.push({ x: parseFloat(match[1]), y: parseFloat(match[2]) });
+    }
+  }
+  return points;
+};
+
+function renderPathItem(item: PathItem, key: string) {
+  const d = item.path.join(" ");
+  const w = item.width;
+
+  if (item.color === "glitter") {
+    const points = parsePathPoints(item.path);
+    return (
+      <React.Fragment key={key}>
+        <Path
+          d={d}
+          stroke="url(#glitterGrad)"
+          strokeWidth={w}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        {points
+          .filter((_, i) => i % 6 === 0)
+          .map((p, i) => (
+            <Circle
+              key={`${key}-spark-${i}`}
+              cx={p.x}
+              cy={p.y}
+              r={(i % 3) + 2}
+              fill="white"
+              opacity={0.9}
+            />
+          ))}
+      </React.Fragment>
+    );
+  }
+
+  if (item.color === "neon") {
+    const neonColor = "#00FFFF";
+    return (
+      <React.Fragment key={key}>
+        <Path
+          d={d}
+          stroke={neonColor}
+          strokeWidth={w * 3}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity={0.25}
+        />
+        <Path
+          d={d}
+          stroke={neonColor}
+          strokeWidth={w * 1.8}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity={0.5}
+        />
+        <Path
+          d={d}
+          stroke="white"
+          strokeWidth={Math.max(w * 0.6, 1)}
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </React.Fragment>
+    );
+  }
+
+  if (item.color === "rainbow") {
+    return (
+      <Path
+        key={key}
+        d={d}
+        stroke="url(#rainbowGrad)"
+        strokeWidth={w}
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    );
+  }
+
+  return (
+    <Path
+      key={key}
+      d={d}
+      stroke={item.color}
+      strokeWidth={w}
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  );
+}
+
 export const DrawingLayer = forwardRef(function DrawingLayer(
   { currentColor, strokeWidth, disabled = false }: DrawingLayerProps,
   ref
 ) {
   const currentColorRef = useRef(currentColor);
   const strokeWidthRef = useRef(strokeWidth);
-  const panResponderRef = useRef<PanResponderInstance | null>(null);
 
   useEffect(() => {
     currentColorRef.current = currentColor;
@@ -64,6 +173,7 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
       forceUpdate();
     },
   }));
+
   const panResponder = useMemo(() => {
     return PanResponder.create({
       onStartShouldSetPanResponder: () => !disabled,
@@ -104,27 +214,41 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
         {...panResponder.panHandlers}
       >
         <Svg style={{ flex: 1 }}>
-          {pathsRef.current.map((item, idx) => (
-            <Path
-              key={`path-${idx}`}
-              d={item.path.join(" ")}
-              stroke={item.color}
-              strokeWidth={item.width}
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          ))}
-          {currentPath.current.path.length > 0 && (
-            <Path
-              d={currentPath.current.path.join(" ")}
-              stroke={currentPath.current.color}
-              strokeWidth={currentPath.current.width}
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+          <Defs>
+            <LinearGradient
+              id="glitterGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <Stop offset="0%" stopColor="#FF1493" />
+              <Stop offset="25%" stopColor="#FFD700" />
+              <Stop offset="50%" stopColor="#00FFFF" />
+              <Stop offset="75%" stopColor="#9370DB" />
+              <Stop offset="100%" stopColor="#FF00FF" />
+            </LinearGradient>
+            <LinearGradient
+              id="rainbowGrad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <Stop offset="0%" stopColor="#FF0000" />
+              <Stop offset="16%" stopColor="#FF7F00" />
+              <Stop offset="33%" stopColor="#FFFF00" />
+              <Stop offset="50%" stopColor="#00FF00" />
+              <Stop offset="66%" stopColor="#0000FF" />
+              <Stop offset="83%" stopColor="#4B0082" />
+              <Stop offset="100%" stopColor="#9400D3" />
+            </LinearGradient>
+          </Defs>
+          {pathsRef.current.map((item, idx) =>
+            renderPathItem(item, `committed-${idx}`)
           )}
+          {currentPath.current.path.length > 0 &&
+            renderPathItem(currentPath.current, "current")}
         </Svg>
       </View>
     </Container>

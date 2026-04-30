@@ -1,7 +1,9 @@
+import { useEditorStore } from "@/store/useEditorStore";
 import { useImageStore } from "@/store/useImageStore";
 import Constants from "expo-constants";
 import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback } from "react";
 import styled from "styled-components/native";
 import ActionButtons from "./buttonContainer";
 import Logo from "./logo";
@@ -29,6 +31,13 @@ const VersionText = styled.Text`
 export default function HomeContainer() {
   const router = useRouter();
   const setImageUri = useImageStore((state) => state.setImageUri);
+  const resetEditor = useEditorStore((state) => state.resetEditor);
+
+  useFocusEffect(
+    useCallback(() => {
+      resetEditor();
+    }, [resetEditor])
+  );
 
   const handleTakePhoto = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();

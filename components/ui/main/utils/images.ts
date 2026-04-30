@@ -674,7 +674,26 @@ export const bgs = [
   },
 ];
 
-export const filters = [
+export type ImageFilter = { id: string; label: string; source: any };
+export type SolidFilter = {
+  id: string;
+  label: string;
+  type: "solid";
+  color: string;
+  opacity: number;
+};
+export type GradientFilter = {
+  id: string;
+  label: string;
+  type: "gradient";
+  colors: [string, string, ...string[]];
+  start?: { x: number; y: number };
+  end?: { x: number; y: number };
+  opacity: number;
+};
+export type FilterItem = ImageFilter | SolidFilter | GradientFilter;
+
+export const filters: FilterItem[] = [
   {
     id: "f1",
     label: "핑크",
@@ -700,4 +719,36 @@ export const filters = [
     label: "살색",
     source: require("../../../../assets/images/common/filter/5.png"),
   },
+  {
+    id: "f6",
+    label: "Sunset",
+    type: "gradient",
+    colors: ["#FFB088", "#FF6B9D"],
+    opacity: 0.35,
+  },
+  { id: "f7", label: "Mint", type: "solid", color: "#A0E5E5", opacity: 0.25 },
+  {
+    id: "f8",
+    label: "Y2K",
+    type: "gradient",
+    colors: ["#FF6BA9", "#6BC4E5"],
+    start: { x: 0, y: 0 },
+    end: { x: 1, y: 1 },
+    opacity: 0.3,
+  },
+  {
+    id: "f9",
+    label: "Vintage",
+    type: "solid",
+    color: "#D4B896",
+    opacity: 0.4,
+  },
+  {
+    id: "f10",
+    label: "Lavender",
+    type: "gradient",
+    colors: ["#C8A8E9", "#FFB8D9"],
+    opacity: 0.3,
+  },
+  { id: "f11", label: "Moody", type: "solid", color: "#5570AA", opacity: 0.3 },
 ];

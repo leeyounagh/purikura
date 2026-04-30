@@ -1,11 +1,21 @@
 import { useEditorStore } from "@/store/useEditorStore";
+import { LinearGradient } from "expo-linear-gradient";
 import { useLayoutEffect, useRef, useState } from "react";
-import { FlatList, Image, TouchableOpacity } from "react-native";
+import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from "react-native-google-mobile-ads";
 import styled from "styled-components/native";
 import EditorCanvas from "../common/editorCanvas";
 import { BottomSheetModal } from "../common/modal";
 import TabBar from "./tabBar";
 import { bgs, filters, stickers } from "./utils/images";
+
+const bannerAdUnitId = __DEV__
+  ? TestIds.BANNER
+  : "ca-app-pub-5067038499285963/0000000000";
 
 const Container = styled.View`
   flex: 1;
@@ -15,6 +25,7 @@ const Container = styled.View`
 export const ContentArea = styled.ImageBackground`
   flex: 1;
   width: 100%;
+  overflow: hidden;
 `;
 const LogoImageContainer = styled.View`
   position: absolute;
@@ -71,6 +82,10 @@ export default function EditorScreen() {
     const isSheetType = ["background", "sticker", "filter"].includes(type);
 
     if (isSheetType) {
+      if (showSheet && sheetType === type) {
+        setShowSheet(false);
+        return;
+      }
       setShowSheet(true);
       setSheetType(type);
       setPentoolVisible(false);
@@ -122,41 +137,85 @@ export default function EditorScreen() {
     } else if (sheetType === "sticker") {
       addSticker(item.source);
     } else if (sheetType === "filter") {
-      setFilter(item.source);
+      setFilter(item);
     }
   };
 
   return (
     <Container>
+      <View
+        style={{
+          alignItems: "center",
+          paddingTop: 24,
+          backgroundColor: "transparent",
+        }}
+      >
+        <BannerAd
+          unitId={bannerAdUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
+      </View>
       <ContentArea
         source={require("../../../assets/images/common/main/bg/main_bg.jpg")}
         resizeMode="cover"
       >
-        <BottomSheetModal visible={showSheet}>
+        <BottomSheetModal
+          visible={showSheet}
+          height={320}
+          onClose={() => setShowSheet(false)}
+        >
           <FlatList
-            horizontal
+            key="grid-4"
             ref={flatListRef}
             data={sheetItems}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => handleSelectItem(item)}>
-                <Image
-                  testID={`${item.label}`}
-                  source={item.source}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    marginHorizontal: 8,
-                    resizeMode: "contain",
-                  }}
-                />
-              </TouchableOpacity>
-            )}
+            numColumns={4}
+            columnWrapperStyle={{ justifyContent: "space-between" }}
+            renderItem={({ item }) => {
+              const previewSize = {
+                width: 70,
+                height: 70,
+                margin: 6,
+                borderRadius: 8,
+              };
+              return (
+                <TouchableOpacity onPress={() => handleSelectItem(item)}>
+                  {"source" in item ? (
+                    <Image
+                      testID={`${item.label}`}
+                      source={item.source}
+                      style={{ ...previewSize, resizeMode: "contain" }}
+                    />
+                  ) : item.type === "solid" ? (
+                    <View
+                      testID={`${item.label}`}
+                      style={{
+                        ...previewSize,
+                        backgroundColor: item.color,
+                      }}
+                    />
+                  ) : (
+                    <LinearGradient
+                      testID={`${item.label}`}
+                      colors={item.colors}
+                      start={item.start ?? { x: 0, y: 0 }}
+                      end={item.end ?? { x: 0, y: 1 }}
+                      style={previewSize}
+                    />
+                  )}
+                </TouchableOpacity>
+              );
+            }}
             onEndReached={() => loadMoreItems()}
             onEndReachedThreshold={0.5}
-            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
           />
         </BottomSheetModal>
+        <LogoImageContainer>
+          <LogoImage
+            source={require("../../../assets/images/common/icon.png")}
+          />
+        </LogoImageContainer>
         <EditorCanvas
           pentoolVisible={pentoolVisible}
           onPentoolClose={closePentool}
@@ -164,11 +223,6 @@ export default function EditorScreen() {
           onSaveComplete={() => setIsSave(false)}
           sheetType={sheetType}
         />
-        <LogoImageContainer>
-          <LogoImage
-            source={require("../../../assets/images/common/icon.png")}
-          />
-        </LogoImageContainer>
       </ContentArea>
       <TabBar onOpenModal={handleOpenSheet} />
     </Container>

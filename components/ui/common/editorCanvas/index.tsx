@@ -14,7 +14,7 @@ import { StickerLayer } from "./StickerLayer";
 
 const CanvasWrapper = styled.View`
   flex: 1;
-  margin-top: 100px;
+  margin-top: 10px;
   align-items: center;
 `;
 const InnerArea = styled.View`
@@ -64,6 +64,7 @@ export default function EditorCanvas({
   sheetType: string;
 }) {
   const imageUri = useImageStore((state) => state.imageUri);
+  const resetVersion = useEditorStore((state) => state.resetVersion);
   const viewShotRef = useRef(null);
   const drawingLayerRef = useRef<{ undo: () => void; clear: () => void }>(null);
   const [aspectRatio, setAspectRatio] = useState(2 / 3);
@@ -84,6 +85,12 @@ export default function EditorCanvas({
       );
     }
   }, [imageUri]);
+
+  useEffect(() => {
+    if (resetVersion > 0) {
+      drawingLayerRef.current?.clear();
+    }
+  }, [resetVersion]);
 
   useEffect(() => {
     if (isSave) {
@@ -132,7 +139,7 @@ export default function EditorCanvas({
   };
   const resetEditor = () => {
     useEditorStore.getState().clearStickers();
-    useEditorStore.getState().setFilter("");
+    useEditorStore.getState().setFilter(null);
     useEditorStore.getState().setBackgroundUri("");
     drawingLayerRef.current?.clear();
     forceUpdate();

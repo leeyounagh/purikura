@@ -1,6 +1,7 @@
 // store/useEditorStore.ts
 import { ImageSourcePropType } from "react-native";
 import { create } from "zustand";
+import type { FilterItem } from "@/components/ui/main/utils/images";
 
 export type Sticker = {
   id: string;
@@ -8,22 +9,26 @@ export type Sticker = {
   x: number;
   y: number;
   scale: number;
+  rotation: number;
 };
 
 interface EditorState {
   imageUri: string | null;
   backgroundUri: string | null;
   stickers: Sticker[];
-  filter: string | null;
+  filter: FilterItem | null;
+  resetVersion: number;
 
   setImageUri: (uri: string) => void;
   setBackgroundUri: (uri: string) => void;
   addSticker: (source: ImageSourcePropType) => void;
   updateStickerPosition: (id: string, x: number, y: number) => void;
   updateStickerScale: (id: string, scale: number) => void;
+  updateStickerRotation: (id: string, rotation: number) => void;
   removeSticker: (id: string) => void;
-  setFilter: (filter: string | null) => void; 
-  clearStickers: () => void; 
+  setFilter: (filter: FilterItem | null) => void;
+  clearStickers: () => void;
+  resetEditor: () => void;
 }
 
 export const useEditorStore = create<EditorState>((set) => ({
@@ -31,6 +36,7 @@ export const useEditorStore = create<EditorState>((set) => ({
   backgroundUri: null,
   stickers: [],
   filter: null,
+  resetVersion: 0,
 
   setImageUri: (uri) => set({ imageUri: uri }),
   setBackgroundUri: (uri) => set({ backgroundUri: uri }),
@@ -44,6 +50,7 @@ export const useEditorStore = create<EditorState>((set) => ({
           x: 100,
           y: 100,
           scale: 1,
+          rotation: 0,
         },
       ],
     })),
@@ -56,9 +63,22 @@ export const useEditorStore = create<EditorState>((set) => ({
     set((state) => ({
       stickers: state.stickers.map((s) => (s.id === id ? { ...s, scale } : s)),
     })),
+  updateStickerRotation: (id, rotation) =>
+    set((state) => ({
+      stickers: state.stickers.map((s) =>
+        s.id === id ? { ...s, rotation } : s
+      ),
+    })),
   removeSticker: (id) =>
     set((state) => ({
       stickers: state.stickers.filter((s) => s.id !== id),
     })),
   setFilter: (filter) => set({ filter }),
+  resetEditor: () =>
+    set((state) => ({
+      stickers: [],
+      filter: null,
+      backgroundUri: null,
+      resetVersion: state.resetVersion + 1,
+    })),
 }));

@@ -1,7 +1,12 @@
 // useImageStore.ts
-import { create } from 'zustand';
+import { create } from "zustand";
 
-export const useImageStore = create(set => ({
+type ImageStore = {
+  imageUri: string | null;
+  setImageUri: (uri: string) => void;
+};
+
+export const useImageStore = create<ImageStore>((set) => ({
   imageUri: null,
   setImageUri: (uri: string) => set({ imageUri: uri }),
 }));

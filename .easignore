@@ -1,0 +1,34 @@
+# Git (not needed on EAS workers; often large)
+.git/
+
+# Dependencies — reinstalled during EAS Build
+node_modules/
+
+# Local Expo / outputs
+.expo/
+dist/
+web-build/
+
+# Android build artifacts & caches
+android/app/build/
+android/build/
+android/.gradle/
+**/.cxx/
+
+# iOS (if present)
+ios/Pods/
+ios/build/
+
+# Test & tooling artifacts
+coverage/
+.playwright/
+test-results/
+playwright-report/
+
+# Local env (do not upload)
+.env*.local
+
+# Repo keystores / certs — signing uses EAS credentials
+*.jks
+*.pem
+upload_cert.pem

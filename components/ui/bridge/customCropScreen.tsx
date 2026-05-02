@@ -200,17 +200,23 @@ export function CustomCropScreen() {
           style={{ width: CROP_WIDTH, height: CROP_HEIGHT }}
         >
           <GestureDetector gesture={composedGesture}>
-            <Animated.Image
-              source={{ uri: imageUri }}
-              style={[
-                {
-                  width: CROP_WIDTH,
-                  height: CROP_HEIGHT,
-                  resizeMode: "cover",
-                },
-                imageStyle,
-              ]}
-            />
+            {imageUri ? (
+              <Animated.Image
+                source={{ uri: imageUri }}
+                style={[
+                  {
+                    width: CROP_WIDTH,
+                    height: CROP_HEIGHT,
+                    resizeMode: "cover",
+                  },
+                  imageStyle,
+                ]}
+              />
+            ) : (
+              <View
+                style={{ width: CROP_WIDTH, height: CROP_HEIGHT }}
+              />
+            )}
           </GestureDetector>
         </ViewShot>
         {isRemovingBg && (

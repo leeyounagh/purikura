@@ -36,9 +36,12 @@ export default function TabBar({ onOpenModal }: Props) {
   return (
     <TabWrapper
       resizeMode="cover"
-      style={{ paddingBottom: insets.bottom }}
+      style={{
+        paddingTop: 10,
+        paddingBottom: 10 + insets.bottom,
+      }}
     >
-      <TabButton onPress={() => router.push("/")}>
+      <TabButton onPress={() => router.push("/")} testID="home-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/home3.png")}
         />
@@ -68,7 +71,7 @@ export default function TabBar({ onOpenModal }: Props) {
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("save")}>
+      <TabButton onPress={() => onOpenModal("save")} testID="save-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/save3.png")}
         />

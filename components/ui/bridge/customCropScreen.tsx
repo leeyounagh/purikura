@@ -320,12 +320,12 @@ export function CustomCropScreen() {
           paddingBottom: Math.max(16, insets.bottom + 8),
         }}
       >
-        <TouchableOpacity onPress={() => router.back()}>
+        <TouchableOpacity onPress={() => router.back()} testID="crop-cancel-button">
           <Text style={{ color: "skyblue", fontSize: 18 }}>
             {t("cropCancel")}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onCapture}>
+        <TouchableOpacity onPress={onCapture} testID="crop-done-button">
           <Text style={{ color: "gold", fontSize: 18 }}>{t("cropDone")}</Text>
         </TouchableOpacity>
       </View>

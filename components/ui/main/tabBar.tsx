@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import React from "react";
 import { ImageBackground, TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 const TabWrapper = styled(ImageBackground)`
@@ -9,7 +10,7 @@ const TabWrapper = styled(ImageBackground)`
   justify-content: space-around;
   border-top-width: 1px;
   border-color: #ccc;
-  height: 80px;
+  min-height: 80px;
   width: 100%;
   background-color:#000;
 `;
@@ -31,11 +32,16 @@ type Props = {
 };
 
 export default function TabBar({ onOpenModal }: Props) {
+  const insets = useSafeAreaInsets();
   return (
     <TabWrapper
       resizeMode="cover"
+      style={{
+        paddingTop: 10,
+        paddingBottom: 10 + insets.bottom,
+      }}
     >
-      <TabButton onPress={() => router.push("/")}>
+      <TabButton onPress={() => router.push("/")} testID="home-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/home3.png")}
         />
@@ -65,7 +71,7 @@ export default function TabBar({ onOpenModal }: Props) {
         />
       </TabButton>
 
-      <TabButton onPress={() => onOpenModal("save")}>
+      <TabButton onPress={() => onOpenModal("save")} testID="save-tab">
         <TabIcon
           source={require("../../../assets/images/common/main/button/save3.png")}
         />

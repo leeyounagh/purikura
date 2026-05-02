@@ -1,7 +1,9 @@
 import { useEditorStore } from "@/store/useEditorStore";
+import { useImageStore } from "@/store/useImageStore";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLayoutEffect, useRef, useState } from "react";
 import { FlatList, Image, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   BannerAd,
   BannerAdSize,
@@ -13,9 +15,14 @@ import { BottomSheetModal } from "../common/modal";
 import TabBar from "./tabBar";
 import { bgs, filters, stickers } from "./utils/images";
 
-const bannerAdUnitId = __DEV__
-  ? TestIds.BANNER
-  : "ca-app-pub-5067038499285963/0000000000";
+/** Real banner unit from AdMob → App → Ad units. Placeholder never serves ads. */
+const PRODUCTION_BANNER_AD_UNIT =
+  "ca-app-pub-5067038499285963/0000000000";
+
+const bannerAdUnitId =
+  __DEV__ || PRODUCTION_BANNER_AD_UNIT.includes("0000000000")
+    ? TestIds.BANNER
+    : PRODUCTION_BANNER_AD_UNIT;
 
 const Container = styled.View`
   flex: 1;
@@ -43,6 +50,8 @@ const LogoImage = styled.Image`
 `;
 
 export default function EditorScreen() {
+  const showMainBgLogo = useImageStore((s) => s.showMainBgLogo);
+  const insets = useSafeAreaInsets();
   const [showSheet, setShowSheet] = useState(false);
   const [sheetItems, setSheetItems] = useState<any[]>([]);
   const [sheetType, setSheetType] = useState<string>("");
@@ -146,7 +155,7 @@ export default function EditorScreen() {
       <View
         style={{
           alignItems: "center",
-          paddingTop: 24,
+          paddingTop: 16 + insets.top,
           backgroundColor: "transparent",
         }}
       >
@@ -211,11 +220,13 @@ export default function EditorScreen() {
             showsVerticalScrollIndicator={false}
           />
         </BottomSheetModal>
-        <LogoImageContainer>
-          <LogoImage
-            source={require("../../../assets/images/common/icon.png")}
-          />
-        </LogoImageContainer>
+        {showMainBgLogo ? (
+          <LogoImageContainer>
+            <LogoImage
+              source={require("../../../assets/images/common/icon.png")}
+            />
+          </LogoImageContainer>
+        ) : null}
         <EditorCanvas
           pentoolVisible={pentoolVisible}
           onPentoolClose={closePentool}

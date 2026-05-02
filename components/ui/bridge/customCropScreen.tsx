@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Gesture,
   GestureDetector,
@@ -27,8 +28,12 @@ import ViewShot from "react-native-view-shot";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export function CustomCropScreen() {
+  const insets = useSafeAreaInsets();
   const imageUri = useImageStore((state) => state.imageUri);
   const setImageUri = useImageStore((state) => state.setImageUri);
+  const setShowMainBgLogo = useImageStore(
+    (state) => state.setShowMainBgLogo
+  );
   const router = useRouter();
 
   const viewShotRef = useRef<ViewShot>(null);
@@ -78,12 +83,16 @@ export function CustomCropScreen() {
   const CROP_HEIGHT = SCREEN_WIDTH * (aspectRatio.height / aspectRatio.width);
 
   const onCapture = async () => {
+    const isSquareCrop =
+      aspectRatio.width === 1 && aspectRatio.height === 1;
     if (Platform.OS === "web") {
+      setShowMainBgLogo(isSquareCrop);
       router.push("/main");
       return;
     }
     if (viewShotRef.current?.capture) {
       const uri = await viewShotRef.current.capture();
+      setShowMainBgLogo(isSquareCrop);
       setImageUri(uri);
       router.push("/main");
     }
@@ -194,7 +203,7 @@ export function CustomCropScreen() {
           overflow: "hidden",
           borderWidth: 2,
           borderColor: "white",
-          marginTop: 20,
+          marginTop: Math.max(20, insets.top + 8),
           alignSelf: "center",
         }}
       >
@@ -308,6 +317,7 @@ export function CustomCropScreen() {
           justifyContent: "space-between",
           paddingHorizontal: 30,
           paddingTop: 30,
+          paddingBottom: Math.max(16, insets.bottom + 8),
         }}
       >
         <TouchableOpacity onPress={() => router.back()}>

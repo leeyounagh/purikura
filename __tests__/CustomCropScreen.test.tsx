@@ -3,6 +3,10 @@ import { useImageStore } from "@/store/useImageStore";
 import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
 
+jest.mock("expo-localization", () => ({
+  getLocales: () => [{ languageCode: "en", regionCode: "US" }],
+}));
+
 // Gesture handler mock
 jest.mock("react-native-gesture-handler", () => {
   const actual = jest.requireActual("react-native-gesture-handler");

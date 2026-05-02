@@ -1,3 +1,4 @@
+import { t } from "@/i18n";
 import { useImageStore } from "@/store/useImageStore";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -116,7 +117,10 @@ export function CustomCropScreen() {
 
     const apiKey = process.env.EXPO_PUBLIC_REMOVE_BG_API_KEY;
     if (!apiKey) {
-      Alert.alert("API 키 없음", "EXPO_PUBLIC_REMOVE_BG_API_KEY를 설정하세요.");
+      Alert.alert(
+        t("cropAlertNoApiKeyTitle"),
+        t("cropAlertNoApiKeyMessage")
+      );
       return;
     }
 
@@ -145,8 +149,8 @@ export function CustomCropScreen() {
       if (!res.ok) {
         console.warn("[removeBg] failed", res.status, await res.text());
         Alert.alert(
-          "알림",
-          "해당 기능은 현재 이용할 수 없습니다.\n잠시 후 다시 시도해 주세요."
+          t("cropAlertNoticeTitle"),
+          t("cropAlertServiceUnavailable")
         );
         return;
       }
@@ -163,8 +167,8 @@ export function CustomCropScreen() {
     } catch (e) {
       console.warn("[removeBg] error", e);
       Alert.alert(
-        "알림",
-        "해당 기능은 현재 이용할 수 없습니다.\n잠시 후 다시 시도해 주세요."
+        t("cropAlertNoticeTitle"),
+        t("cropAlertServiceUnavailable")
       );
     } finally {
       setIsRemovingBg(false);
@@ -234,7 +238,7 @@ export function CustomCropScreen() {
           >
             <ActivityIndicator size="large" color="white" />
             <Text style={{ color: "white", marginTop: 8 }}>
-              배경 제거 중...
+              {t("cropRemovingBg")}
             </Text>
           </View>
         )}
@@ -307,10 +311,12 @@ export function CustomCropScreen() {
         }}
       >
         <TouchableOpacity onPress={() => router.back()}>
-          <Text style={{ color: "skyblue", fontSize: 18 }}>Cancel</Text>
+          <Text style={{ color: "skyblue", fontSize: 18 }}>
+            {t("cropCancel")}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={onCapture}>
-          <Text style={{ color: "gold", fontSize: 18 }}>Done</Text>
+          <Text style={{ color: "gold", fontSize: 18 }}>{t("cropDone")}</Text>
         </TouchableOpacity>
       </View>
     </GestureHandlerRootView>

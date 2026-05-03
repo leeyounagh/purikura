@@ -7,9 +7,20 @@
 
 ---
 
-## 🖼️ 스크린샷
+## 🖼️ 스크린샷 예시
 
-홍보용 스크린샷은 저장소에 추가한 뒤 여기에 이미지 경로를 연결하면 됩니다.
+<table>
+  <tr>
+    <td align="center">
+      <img src="./assets/images/homeScreen.png" width="300"/><br/>
+      <b>홈 화면</b>
+    </td>
+    <td align="center">
+      <img src="./assets/images/editScreen.png" width="300"/><br/>
+      <b>편집 화면</b>
+    </td>
+  </tr>
+</table>
 
 ---
 

@@ -1,7 +1,6 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import React, { useEffect } from "react";
-import { Pressable } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView, Pressable } from "react-native-gesture-handler";
 import { StickerItem } from "./StickerItem";
 
 export const StickerLayer = ({
@@ -26,7 +25,7 @@ export const StickerLayer = ({
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Pressable style={{ flex: 1 }} onPress={handleDeselect}>
-        {stickers.map((sticker) => (
+        {stickers.map((sticker, stackIndex) => (
           <StickerItem
             key={sticker.id}
             id={sticker.id}
@@ -35,6 +34,7 @@ export const StickerLayer = ({
             y={sticker.y}
             scale={sticker.scale}
             rotation={sticker.rotation}
+            stackIndex={stackIndex}
             isSelected={selectedId === sticker.id}
             onSelect={setSelectedId}
           />

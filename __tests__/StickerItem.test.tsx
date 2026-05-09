@@ -40,6 +40,8 @@ describe("StickerItem", () => {
     x: 0,
     y: 0,
     scale: 1,
+    rotation: 0,
+    stackIndex: 0,
     isSelected: true,
     onSelect: jest.fn(),
   };

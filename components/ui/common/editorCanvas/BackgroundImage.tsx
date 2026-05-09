@@ -7,6 +7,7 @@ const Background = styled.Image`
   width: 100%;
   height: 100%;
   resize-mode: cover;
+  pointer-events: none;
 `;
 
 export const BackgroundImage = () => {

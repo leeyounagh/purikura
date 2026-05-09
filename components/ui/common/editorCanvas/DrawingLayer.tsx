@@ -207,13 +207,13 @@ export const DrawingLayer = forwardRef(function DrawingLayer(
   }, [disabled]);
 
   return (
-    <Container>
+    <Container pointerEvents={disabled ? "none" : "auto"}>
       <View
         testID="drawing-container"
-        style={{ flex: 1, pointerEvents: disabled ? "none" : "auto" }}
+        style={{ flex: 1 }}
         {...panResponder.panHandlers}
       >
-        <Svg style={{ flex: 1 }}>
+        <Svg style={{ flex: 1 }} pointerEvents={disabled ? "none" : "auto"}>
           <Defs>
             <LinearGradient
               id="glitterGrad"

@@ -40,6 +40,7 @@ const DynamicPhoto = styled.Image`
   width: 100%;
   height: 100%;
   resize-mode: cover;
+  pointer-events: none;
 `;
 const ButtonWrapper = styled.View`
   width: 100%;
@@ -198,19 +199,39 @@ export default function EditorCanvas({
             <BackgroundImage />
             {imageUri && <DynamicPhoto source={{ uri: imageUri }} />}
             <FilterLayer />
-            <StickerLayer
-              sheetType={sheetType}
-              pentoolVisible={pentoolVisible}
-              selectedId={selectedStickerId}
-              handleDeselect={handleDeselect}
-              setSelectedId={setSelectedStickerId}
-            />
-            <DrawingLayer
-              ref={drawingLayerRef}
-              currentColor={currentColor}
-              strokeWidth={strokeWidth}
-              disabled={!pentoolVisible}
-            />
+            {pentoolVisible ? (
+              <>
+                <StickerLayer
+                  sheetType={sheetType}
+                  pentoolVisible={pentoolVisible}
+                  selectedId={selectedStickerId}
+                  handleDeselect={handleDeselect}
+                  setSelectedId={setSelectedStickerId}
+                />
+                <DrawingLayer
+                  ref={drawingLayerRef}
+                  currentColor={currentColor}
+                  strokeWidth={strokeWidth}
+                  disabled={false}
+                />
+              </>
+            ) : (
+              <>
+                <DrawingLayer
+                  ref={drawingLayerRef}
+                  currentColor={currentColor}
+                  strokeWidth={strokeWidth}
+                  disabled
+                />
+                <StickerLayer
+                  sheetType={sheetType}
+                  pentoolVisible={pentoolVisible}
+                  selectedId={selectedStickerId}
+                  handleDeselect={handleDeselect}
+                  setSelectedId={setSelectedStickerId}
+                />
+              </>
+            )}
           </CanvasArea>
         </ViewShot>
       </InnerArea>

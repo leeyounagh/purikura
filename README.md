@@ -5,6 +5,8 @@
 - **Expo SDK**: 53 · **React Native**: 0.79 · **앱 버전**: 1.2.0 (`app.json`)
 - **개발 빌드**: `expo-dev-client` 사용 → 로컬에서는 `npm run android` / `npm run ios`가 네이티브 프로젝트를 생성·빌드합니다(`android/`, `ios/`는 Git에 커밋되지 않은 상태일 수 있음).
 
+**Google Play**: [purisnap - 스티커 사진 꾸미기 & 사진 편집](https://play.google.com/store/apps/details?id=com.leesuyoen.purisnapapp&hl=gsw)
+
 ---
 
 ## 🖼️ 스크린샷 예시

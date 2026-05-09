@@ -1,8 +1,12 @@
 import { useEditorStore } from "@/store/useEditorStore";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useRef } from "react";
-import { PanResponder, Pressable, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { useEffect, useRef } from "react";
+import { PanResponder, View } from "react-native";
+import {
+  Gesture,
+  GestureDetector,
+  Pressable,
+} from "react-native-gesture-handler";
 import Animated, {
   runOnJS,
   useAnimatedStyle,
@@ -47,7 +51,8 @@ const ControlIcon = styled(Animated.View)`
   border-radius: 14px;
   align-items: center;
   justify-content: center;
-  elevation: 4;
+  z-index: 2;
+  elevation: 8;
 `;
 
 type Props = {
@@ -57,6 +62,8 @@ type Props = {
   y: number;
   scale: number;
   rotation: number;
+  /** Order in sticker list; higher = drawn above when not selected. */
+  stackIndex: number;
   isSelected: boolean;
   onSelect: (id: string) => void;
 };
@@ -68,6 +75,7 @@ export function StickerItem({
   y,
   scale,
   rotation,
+  stackIndex,
   isSelected,
   onSelect,
 }: Props) {
@@ -80,9 +88,10 @@ export function StickerItem({
   const offsetY = useSharedValue(y);
   const scaleVal = useSharedValue(scale);
   const rotationVal = useSharedValue(rotation);
+  /** Baselines for pinch/rotation (worklet-safe; avoids shared `let` across gestures). */
+  const pinchBaseScale = useSharedValue(scale);
+  const rotationBase = useSharedValue(rotation);
 
-  let startScale = scale;
-  let startRotation = 0;
   let rotateStartVal = 0;
   let resizeStartVal = scale;
 
@@ -123,10 +132,10 @@ export function StickerItem({
 
   const pinchGesture = Gesture.Pinch()
     .onStart(() => {
-      startScale = scaleVal.value;
+      pinchBaseScale.value = scaleVal.value;
     })
     .onUpdate((e) => {
-      scaleVal.value = startScale * e.scale;
+      scaleVal.value = pinchBaseScale.value * e.scale;
     })
     .onEnd(() => {
       runOnJS(updateScale)(id, scaleVal.value);
@@ -134,10 +143,10 @@ export function StickerItem({
 
   const rotationGesture = Gesture.Rotation()
     .onStart(() => {
-      startRotation = rotationVal.value;
+      rotationBase.value = rotationVal.value;
     })
     .onUpdate((e) => {
-      rotationVal.value = startRotation + e.rotation;
+      rotationVal.value = rotationBase.value + e.rotation;
     })
     .onEnd(() => {
       runOnJS(updateRotation)(id, rotationVal.value);
@@ -149,7 +158,16 @@ export function StickerItem({
     rotationGesture
   );
 
+  useEffect(() => {
+    offsetX.value = x;
+    offsetY.value = y;
+    scaleVal.value = scale;
+    rotationVal.value = rotation;
+  }, [x, y, scale, rotation]);
+
   const handleRotateDrag = PanResponder.create({
+    onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponderCapture: () => true,
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: (e) => {
       rotateStartVal = rotationVal.value;
@@ -183,6 +201,8 @@ export function StickerItem({
   });
 
   const handleResizeDrag = PanResponder.create({
+    onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponderCapture: () => true,
     onStartShouldSetPanResponder: () => true,
     onPanResponderGrant: () => {
       resizeStartVal = scaleVal.value;
@@ -196,13 +216,20 @@ export function StickerItem({
     },
   });
 
+  const zOrder = isSelected ? 10_000 : 10 + stackIndex;
+
   return (
-    <GestureDetector gesture={combinedGesture}>
-      <Animated.View
-        ref={stickerViewRef}
-        style={[{ position: "absolute" }, animatedStyle]}
-      >
-        <View style={{ alignItems: "center" }} testID={`sticker-${id}`}>
+    <Animated.View
+      ref={stickerViewRef}
+      collapsable={false}
+      style={[
+        { position: "absolute", zIndex: zOrder, elevation: zOrder },
+        animatedStyle,
+      ]}
+      testID={`sticker-${id}`}
+    >
+      <View style={{ alignItems: "center" }}>
+        <GestureDetector gesture={combinedGesture}>
           <Pressable onPress={() => onSelect(id)}>
             <StickerImage
               source={source}
@@ -211,39 +238,39 @@ export function StickerItem({
               testID="sticker-image"
             />
           </Pressable>
+        </GestureDetector>
 
-          {isSelected && (
-            <>
-              <DeleteButton
-                onPress={() => removeSticker(id)}
-                testID="delete-button"
-              >
-                <DeleteText>X</DeleteText>
-              </DeleteButton>
+        {isSelected && (
+          <>
+            <DeleteButton
+              onPress={() => removeSticker(id)}
+              testID="delete-button"
+            >
+              <DeleteText>X</DeleteText>
+            </DeleteButton>
 
-              <ControlIcon
-                style={[{ bottom: -10, right: -10 }, controlIconCounterStyle]}
-                {...handleRotateDrag.panHandlers}
-                testID="rotate-icon"
-              >
-                <MaterialCommunityIcons
-                  name="rotate-right"
-                  size={18}
-                  color="black"
-                />
-              </ControlIcon>
+            <ControlIcon
+              style={[{ bottom: -10, right: -10 }, controlIconCounterStyle]}
+              {...handleRotateDrag.panHandlers}
+              testID="rotate-icon"
+            >
+              <MaterialCommunityIcons
+                name="rotate-right"
+                size={18}
+                color="black"
+              />
+            </ControlIcon>
 
-              <ControlIcon
-                style={[{ bottom: -10, left: -10 }, controlIconCounterStyle]}
-                {...handleResizeDrag.panHandlers}
-                testID="resize-icon"
-              >
-                <MaterialCommunityIcons name="resize" size={18} color="black" />
-              </ControlIcon>
-            </>
-          )}
-        </View>
-      </Animated.View>
-    </GestureDetector>
+            <ControlIcon
+              style={[{ bottom: -10, left: -10 }, controlIconCounterStyle]}
+              {...handleResizeDrag.panHandlers}
+              testID="resize-icon"
+            >
+              <MaterialCommunityIcons name="resize" size={18} color="black" />
+            </ControlIcon>
+          </>
+        )}
+      </View>
+    </Animated.View>
   );
 }

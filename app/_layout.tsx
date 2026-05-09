@@ -1,6 +1,26 @@
-/**
- * Expo Router requires a `_layout.tsx` without a platform extension whenever
- * `_layout.native.tsx` / `_layout.web.tsx` exist. This file is the route-tree fallback;
- * Metro still resolves `_layout.native.tsx` on Android/iOS and `_layout.web.tsx` on web.
- */
-export { default } from "./_layout.native";
+import { Stack } from "expo-router";
+import { useEffect } from "react";
+import mobileAds from "react-native-google-mobile-ads";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+
+export default function RootLayout() {
+  useEffect(() => {
+    void mobileAds().initialize();
+  }, []);
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <SafeAreaView style={{ flex: 1 }} edges={["left", "right"]}>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="bridge" options={{ headerShown: false }} />
+            <Stack.Screen name="main" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}

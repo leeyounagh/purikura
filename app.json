@@ -2,7 +2,7 @@
   "expo": {
     "name": "purisnap",
     "slug": "purikura",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "purisnap",
@@ -16,14 +16,17 @@
       }
     },
     "android": {
+      "permissions": [
+        "com.google.android.gms.permission.AD_ID"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffdce6"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.leesuyoen.purisnapapp",
-      "runtimeVersion": "1.2.1",
-      "versionCode": 8
+      "runtimeVersion": "1.2.2",
+      "versionCode": 9
     },
     "web": {
       "bundler": "metro",

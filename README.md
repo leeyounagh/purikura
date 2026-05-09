@@ -2,7 +2,7 @@
 
 **PuriSnap**은 2000년대 감성의 **스티커 사진**을 디지털로 꾸밀 수 있도록 만든 React Native(Expo) 앱입니다. 사진에 **배경**, **스티커**, **필터**, **펜(그리기)** 등을 적용한 뒤 **갤러리에 저장**할 수 있습니다.
 
-- **Expo SDK**: 53 · **React Native**: 0.79 · **앱 버전**: 1.2.1 (`app.json`)
+- **Expo SDK**: 53 · **React Native**: 0.79 · **앱 버전**: 1.2.2 (`app.json`)
 - **개발 빌드**: `expo-dev-client` 사용 → 로컬에서는 `npm run android` / `npm run ios`가 네이티브 프로젝트를 생성·빌드합니다(`android/`, `ios/`는 Git에 커밋되지 않은 상태일 수 있음).
 
 **Google Play**: [purisnap - 스티커 사진 꾸미기 & 사진 편집](https://play.google.com/store/apps/details?id=com.leesuyoen.purisnapapp&hl=gsw)

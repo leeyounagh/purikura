@@ -2,7 +2,7 @@
   "expo": {
     "name": "purisnap",
     "slug": "purikura",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "purisnap",
@@ -25,8 +25,8 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.leesuyoen.purisnapapp",
-      "runtimeVersion": "1.2.3",
-      "versionCode": 10
+      "runtimeVersion": "1.2.4",
+      "versionCode": 11
     },
     "web": {
       "bundler": "metro",

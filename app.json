@@ -26,7 +26,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.leesuyoen.purisnapapp",
       "runtimeVersion": "1.2.4",
-      "versionCode": 11
+      "versionCode": 12
     },
     "web": {
       "bundler": "metro",

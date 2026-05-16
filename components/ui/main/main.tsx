@@ -15,12 +15,12 @@ import { BottomSheetModal } from "../common/modal";
 import TabBar from "./tabBar";
 import { bgs, filters, stickers } from "./utils/images";
 
-/** Real banner unit from AdMob → App → Ad units. Placeholder never serves ads. */
+/** Banner unit ID is injected via EXPO_PUBLIC_ADMOB_BANNER_UNIT_ID. */
 const PRODUCTION_BANNER_AD_UNIT =
-  "ca-app-pub-5067038499285963/9959003263";
+  process.env.EXPO_PUBLIC_ADMOB_BANNER_UNIT_ID ?? "";
 
 const bannerAdUnitId =
-  __DEV__ || PRODUCTION_BANNER_AD_UNIT.includes("0000000000")
+  __DEV__ || !PRODUCTION_BANNER_AD_UNIT
     ? TestIds.BANNER
     : PRODUCTION_BANNER_AD_UNIT;
 

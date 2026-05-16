@@ -17,7 +17,7 @@ import { bgs, filters, stickers } from "./utils/images";
 
 /** Real banner unit from AdMob → App → Ad units. Placeholder never serves ads. */
 const PRODUCTION_BANNER_AD_UNIT =
-  "ca-app-pub-5067038499285963/0000000000";
+  "ca-app-pub-5067038499285963/9959003263";
 
 const bannerAdUnitId =
   __DEV__ || PRODUCTION_BANNER_AD_UNIT.includes("0000000000")
